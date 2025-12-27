@@ -1,3 +1,129 @@
 ---
-title: "Chapter 2"
+title: "How To Visualise Numerical Data"
 ---
+
+### Histograms
+
+When you have one numerical variable, whether discrete or continuous, a **histogram** is a great way to visualise its distribution.
+
+We’ll use the `ggplot2` package for this. If you haven’t used it before, you’ll need to install it first.
+
+```{r, eval=FALSE}
+# Install the package
+install.packages(ggplot2)
+```
+
+Once installed, you can load the package and start plotting.
+
+```{r, message = FALSE, warning = FALSE}
+# Load the library
+library(ggplot2)
+
+# We can plot the histogram
+ggplot(clean_penguins, aes(x=body_mass_g))+
+  geom_histogram()
+         
+```
+
+The histogram looks a bit plain without any color, and the x-axis label isn’t very informative. Let’s add some color, fix the labels, and give it a clean white background.
+
+```{r}
+# We can plot the histogram
+ggplot(clean_penguins, aes(x=body_mass_g))+
+  geom_histogram(fill="orangered", bins=30) +
+  labs(x="Body Mass of Penguins (g)")+
+  theme_bw()
+```
+
+```{r, message=FALSE, warning = FALSE}
+ggplot(penguins, aes(body_mass_g, fill = species)) +
+  geom_histogram(binwidth = 100)
+```
+
+```{r, message=FALSE, warning = FALSE}
+ggplot(penguins, aes(body_mass_g, colour = species)) +
+  geom_freqpoly(binwidth = 100)
+```
+
+```{r}
+ggplot(penguins, aes(body_mass_g, after_stat(density), colour = species)) +
+  geom_freqpoly(binwidth = 100)
+```
+
+
+### Scatterplots 
+
+What if we’re interested in how body mass relates to flipper length? In this case, we’re working with two continuous numerical variables, so a **scatterplot** would be a good choice.
+
+```{r}
+ggplot(clean_penguins, aes(x=body_mass_g, y=flipper_length_mm))+
+  geom_point()
+```
+
+Like we did with the histogram, we can add color, change the shape of the points, and include informative labels.
+
+```{r}
+ggplot(clean_penguins, aes(x=body_mass_g, y=flipper_length_mm))+
+  geom_point(fill="aquamarine", col="aquamarine4", pch=21, size=2.5)+
+  labs(x="Body Mass of Penguins (g)", y="Flipper Length of Penguins (mm)")+
+  theme_bw()
+```
+
+We can see that as the body mass of a penguin increases, its flipper length also tends to increase. This suggests a *strong positive linear* relationship.
+
+We can customise the scatterplot even further by using the `mapping` argument to colour the points by species type. To visualise the linear relationship, we include `method = "lm"` in `geom_smooth()`, which fits a linear model (a straight line) to the data.
+
+```{r}
+ggplot(
+  penguins,
+  mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(mapping = aes(color = species)) +
+  geom_smooth(method = "lm")
+```
+
+```{r, warning = FALSE, message = FALSE}
+ggplot(
+  data = penguins,
+  mapping = aes(x = flipper_length_mm, y = body_mass_g)
+) +
+  geom_point(mapping = aes(color = species, shape = species)) +
+  geom_smooth(method = "lm") +
+  scale_color_manual(
+    values = c(
+      Adelie = "#03045e",
+      Chinstrap = "#0096c7",
+      Gentoo = "#90e0ef"
+    )
+  )
+```
+
+```{r, warning = FALSE, message = FALSE}
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species, shape = island)) +
+  scale_colour_brewer(palette = "Set1")
+  
+```
+
+```{r, warning = FALSE, message = FALSE}
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species, shape = species)) +
+  facet_wrap(~island) +
+  scale_colour_viridis_d()
+
+```
+
+Colour blind
+
+```{r, warning = FALSE, message = FALSE}
+library(ggthemes)
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species, shape = species)) +
+  facet_wrap(~island) +
+  scale_colour_colorblind()
+```
+
+```{r}
+library("scales")
+
+show_col(colorblind_pal()(8))
+```

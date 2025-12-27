@@ -4,7 +4,7 @@ title: "Getting to Know Your Data"
 
 ## Variables
 
-Before we jump into the world of statistical testing, let’s take a moment to refresh our understanding of what a variable is, the different types of variables, and how we can describe them using numerical and graphical methods. test
+Before we jump into the world of statistical testing, let’s take a moment to refresh our understanding of what a variable is, the different types of variables, and how we can describe them using numerical and graphical methods.
 
 **So what is a variable?**
 

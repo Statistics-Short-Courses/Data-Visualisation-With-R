@@ -1,0 +1,4 @@
+---
+title: "How To Visualise Numerical and Categorical Data"
+editor: visual
+---
