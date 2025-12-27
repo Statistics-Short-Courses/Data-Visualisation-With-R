@@ -1,0 +1,36 @@
+
+project:
+  type: book
+  output-dir: docs
+engine: knitr
+
+book:
+  title: UNE Course
+  author: Cara Fernandes
+  date: 10/29/2025
+  chapters:
+  - index.qmd
+  - intro.qmd
+  - chapter1.qmd
+  - chapter2.qmd
+  - summary.qmd
+  - references.qmd
+  page-navigation: false
+  
+format:
+  live-html:
+    toc: true
+    number-sections: true
+    toc-depth: 1
+    toc-expand: 2
+    toc-title: Contents
+    number-depth: 2
+
+css: 
+ - include/webex.css
+ - include/style.css
+include-after-body:
+ - include/webex.js
+ - include/displayall.js
+ - include/gating.js
+ - include/skip-exercises.js
