@@ -4,13 +4,13 @@ title: "Getting to Know Your Data"
 
 ## Variables
 
-Before we jump into the world of statistical testing, let’s take a moment to refresh our understanding of what a variable is, the different types of variables, and how we can describe them using numerical and graphical methods.
+Before we jump into the world of statistical testing, let's take a moment to refresh our understanding of what a variable is, the different types of variables, and how we can describe them using numerical and graphical methods.
 
 **So what is a variable?**
 
 The Australian Bureau of Statistics defines a variable to be "any characteristic, number, or quantity that can be measured or counted."
 
-If you’ve ever tried dieting, you might have recorded your weight on your phone over time. Or maybe you’ve tracked how long your morning commute takes so you know when to leave to arrive on time. In both cases, you are measuring something that changes, and these are examples of variables.
+If you've ever tried dieting, you might have recorded your weight on your phone over time. Or maybe you've tracked how long your morning commute takes so you know when to leave to arrive on time. In both cases, you are measuring something that changes, and these are examples of variables.
 
 ## Types of Variables
 
@@ -30,9 +30,9 @@ A **categorical variable**, on the other hand, represents categories or labels t
 
 A **nominal categorical variable** includes observations with no particular order. For example, if you asked ten coworkers for their favorite movie and recorded their answers under a "movies" variable, it would be nominal because there is no inherent sequence or ranking among the movie titles.
 
-In an **ordinal categorical variable,** there is an inherent logical order to the observations. For example, if we collected age groups such as "18–24", "25–38", "39–55", "56–70", and "70+", we’re now working with labels that have a built-in order where "18–24" is younger than "25–38", and so on.
+In an **ordinal categorical variable,** there is an inherent logical order to the observations. For example, if we collected age groups such as "18--24", "25--38", "39--55", "56--70", and "70+", we're now working with labels that have a built-in order where "18--24" is younger than "25--38", and so on.
 
-Another example might be asking people whether they like ice cream, with options like "strongly agree", "agree", "neutral", "disagree", and "strongly disagree". In this case, the order of the options has meaning, even if the distance between them isn’t equal.
+Another example might be asking people whether they like ice cream, with options like "strongly agree", "agree", "neutral", "disagree", and "strongly disagree". In this case, the order of the options has meaning, even if the distance between them isn't equal.
 
 Take a moment to check your understanding with the exercises below.
 
@@ -58,9 +58,291 @@ library(webexercises)
 
     g\. Number of calls per day is a `r mcq(c("discrete numerical variable", "continuous numerical variable", "ordinal categorical variable", "nominal categorical variable", answer = "discrete numerical variable"))`
 
-## Visually Representing Data
+## Preparing Data for Visualisation
 
-Now that we’ve covered the main types of variables, we can start thinking about how to visually represent data.
+```{r}
+```
+
+```{r}
+```
+
+Now that we've covered the main types of variables, we can start thinking about how to prepare and visually represent data with figures and tables. In this section, we will focus on preparing data for tables.
+
+In R, datasets are stored as dataframes, which are objects made up of rows and columns. Each row corresponds to an individual observation, while each column represents the variable that is being measured. There are several ways R stores variables: character for text, factor for categorical, integer for whole numbers, numeric for decimals, and logical for booleans (TRUE/FALSE).
+
+Cleaning data can be the most time-consuming, yet arguably the most important, part of analysing data! Generally, it is
+
+-   wide format to long format
+
+The first data set we will look at today is the Naplan
+
+```{r}
+naplan <- read.csv("Data-sets/naplan_reading.csv")
+```
+
+Now that we have the dataset loaded in, let's take a look at the variables in the dataset using `str()`.
+
+```{r}
+str(naplan)
+```
+
+In the top line, we can see that there are 3000 observations and 11 variables.
+
+We can confirm this using the `dim()` function.
+
+```{r}
+dim(naplan)
+```
+
+```{r}
+names(naplan)
+```
+
+The first column gives us the variables, the second column gives us the type of variable, and the third column gives us individual observations for each row. However, we can see `school_type` is stored as a `chr` or character (text) variable. Text variables are very common when you encounter surveys that have customer feedback, for example, as each response will be unique from one another.
+
+It is important to check that your variables are stored correctly. We can see certain variables like reading time at home is an integer, which matches our expectations.
+
+You can use the `unique()` function to see the unique groupings or labels within a categorical variable. In our case, we can use it to confirm if our suspicions that `school_type` is categorical. To call a specific variable, we call the dataset followed by `$` and then the variable name.
+
+```{r}
+unique(naplan$school_type)
+```
+
+There are only 3 unique labels, which strongly suggests that `school type` is a nominal categorical variable. If it were truly a text variable, we might see thousands of unique labels.
+
+We can manually convert the variable to categorical using `as.factor()`:
+
+```{r}
+naplan$school_type <- as.factor(naplan$school_type)
+```
+
+```{r}
+str(naplan)
+```
+
+Now we can see `school_type` is a factor with 3 levels (or 3 unique labels).
+
+Alternatively, we can also convert all strings (text) to categorical variables with the `stringsAsFactors` argument when we read in the dataset.
+
+```{r}
+naplan <- read.csv("Data-sets/naplan_reading.csv",
+                   stringsAsFactors = TRUE)
+```
+
+```{r}
+str(naplan)
+```
+
+As seen above, all the `chr` variables have been converted to `Factor`, which is how the variables should be stored. Note that there might be times where you need a variable stored as `chr`, so you should always be sure of what you're checking.
+
+We can now attach the dataset. Attaching the dataset means we can call variables directly without using `$`.
+
+```{r}
+attach(naplan)
+```
+
+If we type `naplan` directly in, we can see the content.
+
+```{r}
+naplan
+```
+
+Alternatively, we can use the `View()` function to open up a new tab in RStudio with the dataset.
+
+```{r,eval=FALSE}
+View(naplan)
+```
+
+We can also select parts of the dataframe. In R, we subset by calling the dataset followed by `[,]` . Writing a blank space before the comma indicates that all rows are includes, while a blank space after the comma indicates that all columns are included. For example, `[,3]` selects the third column of a dataframe. If we want to select the first three columns, we can write:
+
+```{r}
+naplan[,1:3]
+```
+
+Perhaps we only want to select the middle rows for all the columns of the dataframe.
+
+```{r}
+naplan[5:6,]
+```
+
+We can even select rows based on logical tests on the values of one or more variables.
+
+```{r}
+naplan[reading_time_home > 30 & naplan_reading_score > 800,]
+```
+
+We can also sort the rows and the columns in the dataset. By default, R will sort in ascending order.
+
+```{r}
+naplan[order(naplan_reading_score),]
+```
+
+We can also sort and select odd numbered columns.
+
+```{r}
+naplan[order(naplan_reading_score), c(1, 3, 5, 7, 9, 11)]
+```
+
+Or descending order.
+
+```{r}
+naplan[rev(order(naplan_reading_score)), c(1, 3, 5, 7, 9, 11)]
+```
+
+We can summarise the content of the dataframe as well.
+
+```{r}
+summary(naplan)
+```
+
+You might notice that the summary doesn't quite work for categorical varibales.
+
+We can use `tapply()` and `with()` to summarise a quantitative variable by a qualitative variable.
+
+```{r}
+with(naplan, tapply(naplan_reading_score, grade, mean))
+```
+
+`aggregate()` allows you to summarise by one or more categorical variables, while `tapply` can only summarise one variable at a time.
+
+```{r}
+aggregate(naplan[,c(4,11)], list(grade),mean)
+```
+
+```{r}
+aggregate(naplan[,c(4,11)], list(Grade = grade),mean)
+```
+
+```{r}
+aggregate(naplan[,c(4,11)], list(Grade = grade, "Parent Education" = parent_education),mean)
+```
+
+```{r, message = FALSE, warning=FALSE}
+library(gt)
+library(tidyverse)
+
+```
+
+```{r}
+naplan %>% 
+  dplyr::filter(reading_time_home > 30 & naplan_reading_score > 800) %>%
+  gt() %>%
+  tab_header(title = "Naplan") %>%
+  fmt_number(decimals=2) %>%
+  cols_label(
+    student_id = md("***Student ID***"),
+    school_id = md("***School ID***"),
+    grade = md("***Grade***"),
+    reading_time_home = md("***Reading Time***"),
+    parent_education = md("***Parent Education***"),
+    school_type = md("***School Type***"),
+    gender = md("***Gender***"),
+    birth_months = md("***Birth Month***"),
+    n_siblings = md("***Number of Siblings***"),
+    ses_index = md("***SES Index***"),
+    naplan_reading_score = md("***Reading Score***")
+  )
+```
+
+```{r}
+naplan %>% 
+  filter(gender == "Female", school_type == "Independent") %>%
+  arrange(desc(naplan_reading_score)) %>%
+  slice_head(n = 10) %>%
+  gt() %>%
+  tab_header(title = "Naplan") %>%
+  fmt_number(decimals = 2) %>%
+  cols_label(
+    student_id = md("***Student ID***"),
+    school_id = md("***School ID***"),
+    grade = md("***Grade***"),
+    reading_time_home = md("***Reading Time***"),
+    parent_education = md("***Parent Education***"),
+    school_type = md("***School Type***"),
+    gender = md("***Gender***"),
+    birth_months = md("***Birth Month***"),
+    n_siblings = md("***Number of Siblings***"),
+    ses_index = md("***SES Index***"),
+    naplan_reading_score = md("***Reading Score***")
+  ) %>%
+  data_color(
+    columns = naplan_reading_score,
+    method = "numeric",
+    palette = "viridis",
+    domain = c(0, 1000),
+    reverse = TRUE
+  ) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "gray95"),
+      cell_borders(sides = c("l", "r"), color = "gray50", weight = px(3))
+    ),
+    locations = cells_body(columns = -naplan_reading_score)
+  ) %>%
+  tab_style(
+    style = cell_fill(color = "gray98"),
+    locations = cells_title()
+  ) %>%
+  tab_style(
+    style = list(cell_fill(color = "gray35"), cell_text(color = "white")),
+    locations = list(cells_footnotes(), cells_source_notes())
+  ) %>%
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_title(groups = "title")
+  ) %>% 
+  tab_style(
+    style = cell_borders(
+      sides = c("t", "b"),
+      color = "darkgrey",
+      weight = px(3)
+    ),
+    locations = list(cells_column_labels(), cells_stubhead())
+  ) %>%
+tab_footnote(
+    footnote = "SES Index represents ",
+    locations = cells_column_labels(columns = ses_index)
+  )
+
+```
+
+```{r}
+naplan |>
+  dplyr::group_by(gender) |>
+  dplyr::summarise(
+    mean_score = mean(naplan_reading_score, na.rm = TRUE),
+    mean_ses   = mean(ses_index, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  tidyr::pivot_wider(
+    names_from = gender,
+    values_from = c(mean_score, mean_ses)
+  ) |>
+  gt() |>
+  fmt_number(columns = everything(), decimals = 2) |>
+  tab_spanner(
+    label = "Female",
+    columns = matches("_Female$")
+  ) |>
+  tab_spanner(
+    label = "Male",
+    columns = matches("_Male$")
+  ) |>
+  cols_label(
+    matches("mean_score") ~ "Reading Score<br>Average",
+    matches("mean_ses") ~ "SES Index<br>Average",
+    .fn=md
+  ) |>
+  cols_width(everything() ~ px(120))
+```
+
+```{r}
+library(psych)
+
+
+```
+
+Exercise checkpoint
 
 First, we will need to load in some data into R. We will be working with the `palmerpenguins` package. The `palmerpenguins` package is a dataset collected and made available by [Dr. Kristen Gorman](https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php) and the [Palmer Station, Antarctica LTER](https://pallter.marine.rutgers.edu/), a member of the [Long Term Ecological Research Network](https://lternet.edu/).
 
@@ -76,10 +358,9 @@ Once installed, you will need to load the package into R.
 library(palmerpenguins)
 ```
 
-Now that we have the package installed, let’s take a look at the variables in the dataset using `str()`.
+Now that we have the package installed, let's take a look at the variables in the dataset using `str()`.
 
-```{r}
-str(penguins)
+```{q}
 ```
 
 You might notice that some values are listed as `NA`. This means there are missing observations. To check for missing values, we can use:
@@ -94,7 +375,7 @@ Since this returns `TRUE`, we know there are missing values in the dataset. Let'
 sum(is.na(penguins))
 ```
 
-There are 19 missing observations. This can cause problems when generating numerical summaries or running statistical tests. At this stage, to handle this, we can remove the missing values. It’s always best practice to store your cleaned data in a new dataset and leave the original untouched. **Note that you should always be careful when removing observations, as even partially filled observations can still provide valuable information.**
+There are 19 missing observations. This can cause problems when generating numerical summaries or running statistical tests. At this stage, to handle this, we can remove the missing values. It's always best practice to store your cleaned data in a new dataset and leave the original untouched. **Note that you should always be careful when removing observations, as even partially filled observations can still provide valuable information.**
 
 ```{r}
 clean_penguins <- na.omit(penguins)
@@ -143,11 +424,14 @@ View(penguins)
 View(clean_penguins)
 ```
 
-Now that we’ve inspected the dataset, we can start thinking about how to visually represent and understand the data.
+Now that we've inspected the dataset, we can start thinking about how to visually represent and understand the data.
+
+```         
+```
 
 We can describe data using numerical summaries and graphs. Numerical summaries are statistical measures that capture key aspects of a dataset. The way we choose to present these summaries and the graphs that accompany them depends on the type of variable we are working with.
 
-Let’s start with numerical summaries.
+Let's start with numerical summaries.
 
 For **numerical variables**, whether continuous or discrete, we can include:
 
@@ -203,7 +487,7 @@ gt(data)
 
 Let's take a look at calculating descriptive statistics for `body_mass_g`, which describes the body mass of each penguin in grams.
 
-Now we can attach the cleaned `penguins` dataset. Attaching the dataset allows us to call variables directly by name. If we don’t attach it, we can still access variables, but we need to use the full format (for example, `clean_penguins$sex`).
+Now we can attach the cleaned `penguins` dataset. Attaching the dataset allows us to call variables directly by name. If we don't attach it, we can still access variables, but we need to use the full format (for example, `clean_penguins$sex`).
 
 ```{r, message=F}
 # Attach cleaned dataset 
@@ -249,238 +533,3 @@ The `summary()` function lets us quickly gather all of this information at once.
 # Calculate 5-point summary
 summary(body_mass_g)
 ```
-
-Now that we’ve explored numerical summaries, let’s move on to graphing.
-
-When you have one numerical variable, whether discrete or continuous, a **histogram** is a great way to visualise its distribution.
-
-We’ll use the `ggplot2` package for this. If you haven’t used it before, you’ll need to install it first.
-
-```{r, eval=FALSE}
-# Install the package
-install.packages(ggplot2)
-```
-
-Once installed, you can load the package and start plotting.
-
-```{r, message = FALSE, warning = FALSE}
-# Load the library
-library(ggplot2)
-
-# We can plot the histogram
-ggplot(clean_penguins, aes(x=body_mass_g))+
-  geom_histogram()
-         
-```
-
-The histogram looks a bit plain without any color, and the x-axis label isn’t very informative. Let’s add some color, fix the labels, and give it a clean white background.
-
-```{r}
-# We can plot the histogram
-ggplot(clean_penguins, aes(x=body_mass_g))+
-  geom_histogram(fill="orangered", bins=30) +
-  labs(x="Body Mass of Penguins (g)")+
-  theme_bw()
-```
-
-```{r, message=FALSE, warning = FALSE}
-ggplot(penguins, aes(body_mass_g, fill = species)) +
-  geom_histogram(binwidth = 100)
-```
-
-```{r, message=FALSE, warning = FALSE}
-ggplot(penguins, aes(body_mass_g, colour = species)) +
-  geom_freqpoly(binwidth = 100)
-```
-
-```{r}
-ggplot(penguins, aes(body_mass_g, after_stat(density), colour = species)) +
-  geom_freqpoly(binwidth = 100)
-```
-
-What if we’re interested in how body mass relates to flipper length? In this case, we’re working with two continuous numerical variables, so a **scatterplot** would be a good choice.
-
-```{r}
-ggplot(clean_penguins, aes(x=body_mass_g, y=flipper_length_mm))+
-  geom_point()
-```
-
-Like we did with the histogram, we can add color, change the shape of the points, and include informative labels.
-
-```{r}
-ggplot(clean_penguins, aes(x=body_mass_g, y=flipper_length_mm))+
-  geom_point(fill="aquamarine", col="aquamarine4", pch=21, size=2.5)+
-  labs(x="Body Mass of Penguins (g)", y="Flipper Length of Penguins (mm)")+
-  theme_bw()
-```
-
-We can see that as the body mass of a penguin increases, its flipper length also tends to increase. This suggests a *strong positive linear* relationship.
-
-We can customise the scatterplot even further by using the `mapping` argument to colour the points by species type. To visualise the linear relationship, we include `method = "lm"` in `geom_smooth()`, which fits a linear model (a straight line) to the data.
-
-```{r}
-ggplot(
-  penguins,
-  mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
-  geom_point(mapping = aes(color = species)) +
-  geom_smooth(method = "lm")
-```
-
-```{r, warning = FALSE, message = FALSE}
-ggplot(
-  data = penguins,
-  mapping = aes(x = flipper_length_mm, y = body_mass_g)
-) +
-  geom_point(mapping = aes(color = species, shape = species)) +
-  geom_smooth(method = "lm") +
-  scale_color_manual(
-    values = c(
-      Adelie = "#03045e",
-      Chinstrap = "#0096c7",
-      Gentoo = "#90e0ef"
-    )
-  )
-```
-
-```{r, warning = FALSE, message = FALSE}
-ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
-  geom_point(aes(color = species, shape = island)) +
-  scale_colour_brewer(palette = "Set1")
-  
-```
-
-```{r, warning = FALSE, message = FALSE}
-ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
-  geom_point(aes(color = species, shape = species)) +
-  facet_wrap(~island) +
-  scale_colour_viridis_d()
-
-```
-
-Colour blind
-
-```{r, warning = FALSE, message = FALSE}
-library(ggthemes)
-ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
-  geom_point(aes(color = species, shape = species)) +
-  facet_wrap(~island) +
-  scale_colour_colorblind()
-```
-
-```{r}
-library("scales")
-
-show_col(colorblind_pal()(8))
-```
-
-Now, let’s look at a case where we have one categorical variable and one numerical variable. A **boxplot** is a great choice here. Let’s see how body mass differs between penguin species.
-
-```{r}
-ggplot(clean_penguins, aes(x=species, y=body_mass_g))+
-  geom_boxplot(fill = c("coral2", "chartreuse2", "cadetblue2"),
-               col = c("coral3", "chartreuse4", "cadetblue4")) +
-  labs(x="Species of Penguin", y="Body Mass (g)")
-```
-
-We can see that Gentoo penguins have a noticeably higher median body mass compared to Chinstrap and Adelie penguins. The interquartile range (the box) for the Gentoo species does not overlap with the others, suggesting there may be a significant difference between them.
-
-Since we’re now considering species, let’s also take a look at how many penguins were observed in each species. Because we’re dealing with a categorical variable, a **bar plot** is appropriate.
-
-```{r}
-ggplot(clean_penguins, aes(x = species)) +
-  geom_bar(fill = c("coral2", "chartreuse2", "cadetblue2"),
-               col = c("coral3", "chartreuse4", "cadetblue4")) +
-  labs(x = "Penguin Species", y = "Count") +
-  theme_bw()
-
-```
-
-We can also explore proportions to understand how each species contributes to the total sample.
-
-```{r}
-ggplot(data=clean_penguins, aes(x=species))+
-  geom_bar(fill = c("coral2", "chartreuse2", "cadetblue2"),
-               col = c("coral3", "chartreuse4", "cadetblue4"), 
-           aes(y=after_stat(prop), group=1))+
-  labs(x="Penguin Species", y="Proportion")+
-  theme_bw()
-```
-
-Adelie penguins make up a much larger proportion of the sample, while Chinstrap penguins account for the smallest. It’s important to consider how such imbalances in your dataset could influence your interpretation.
-
-We can also generate a **mosaic plot** for species. To do so, we will need to install `ggmosaic`.
-
-```{r, eval=FALSE}
-install.packages("ggmosaic")
-```
-
-```{r, message=FALSE, warning = FALSE}
-library(ggmosaic)
-
-ggplot(data=clean_penguins, aes(col=species))+
-  geom_mosaic(aes(x=product(species)), fill=c("coral2", "chartreuse2", "cadetblue2"))+
-  theme_bw() 
-```
-
-The wider the tile, the greater the proportion that species contributes. Adelie has the widest tile, which confirms it makes up the largest share of the sample.
-
-What if we want to look at penguin species by the island where they were observed? We are now dealing with two categorical variables. Mosaic plots work well here too.
-
-```{r, warning = FALSE}
-ggplot(clean_penguins) +
-  geom_mosaic(aes(x = product(island, species)), 
-              fill = rep(c("coral2", "chartreuse2", "cadetblue2"),3)) +
-  theme_bw()
-```
-
-From this plot you can see:
-
--   Adelie appear on Biscoe, Dream, and Torgersen in roughly similar counts.
-
--   Chinstrap are observed only on Dream.
-
--   Gentoo are observed only on Biscoe.
-
-These patterns help explain why Adelie dominate overall, and they also show that species presence varies by island.
-
-Be sure to `detach()` your dataset before you move onto the exercises.
-
-```{r}
-detach(clean_penguins)
-```
-
-## Exercise Checkpoint 2
-
-1.  Now that you are more comfortable generating plots and summary statistics in R, it is a good time to test your skills on a new dataset, the built-in **iris** dataset. This dataset is already preloaded in RStudio, so there is no need to import anything.
-
-    To make sure it is available, you can view it by running
-
-    ```{r, eval=FALSE}
-    View(iris)
-    ```
-
-    This will open the dataset in a new tab in RStudio so you can explore its structure and variables before starting your analysis.
-
-    a\. How many variables are in the `iris` dataset? `r fitb(5)`
-
-    b\. How many observations are in the `iris` dataset? `r fitb(150)`
-
-    c\. How many categorical variables are in the `iris` dataset? `r fitb(1)`
-
-    d\. How many numerical variables are in the `iris` dataset? `r fitb(4)`
-
-    e\. How many species are in the `iris` dataset? `r fitb(3)`
-
-    f\. What are the names of the three species in the `iris` dataset? Please list them in **alphabetical order**, separated by commas (for example: `x, y, z`) `r fitb("setosa, versicolor, virginica", ignore_case = TRUE, ignore_ws = TRUE, regex=TRUE)`
-
-    g\. Is `Species` nominal or ordinal? `r fitb("nominal", ignore_case = TRUE, ignore_ws = TRUE, regex=TRUE)`
-
-    h\. Is `Sepal.Length` continuous or discrete? `r fitb("continuous", ignore_case = TRUE, ignore_ws = TRUE, regex=TRUE)`
-
-    i\. What is the mean sepal width of iris varieties rounded to one decimal place? `r fitb(3.1)`
-
-    j\. What is an appropriate plot to visualise petal width against species? `r fitb("boxplot", ignore_case = TRUE, ignore_ws = TRUE, regex=TRUE)`
-
-    k\. What is an appropriate plot to visualise petal width against sepal width? `r fitb("scatterplot", ignore_case = TRUE, ignore_ws = TRUE, regex=TRUE)`
-
-2.  

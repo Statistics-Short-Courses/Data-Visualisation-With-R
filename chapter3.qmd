@@ -2,3 +2,115 @@
 title: "How To Visualise Numerical and Categorical Data"
 editor: visual
 ---
+
+Now, let's look at a case where we have one categorical variable and one numerical variable. A **boxplot** is a great choice here. Let's see how body mass differs between penguin species.
+
+```{r}
+ggplot(clean_penguins, aes(x=species, y=body_mass_g))+
+  geom_boxplot(fill = c("coral2", "chartreuse2", "cadetblue2"),
+               col = c("coral3", "chartreuse4", "cadetblue4")) +
+  labs(x="Species of Penguin", y="Body Mass (g)")
+```
+
+We can see that Gentoo penguins have a noticeably higher median body mass compared to Chinstrap and Adelie penguins. The interquartile range (the box) for the Gentoo species does not overlap with the others, suggesting there may be a significant difference between them.
+
+Since we're now considering species, let's also take a look at how many penguins were observed in each species. Because we're dealing with a categorical variable, a **bar plot** is appropriate.
+
+```{r}
+ggplot(clean_penguins, aes(x = species)) +
+  geom_bar(fill = c("coral2", "chartreuse2", "cadetblue2"),
+               col = c("coral3", "chartreuse4", "cadetblue4")) +
+  labs(x = "Penguin Species", y = "Count") +
+  theme_bw()
+
+```
+
+We can also explore proportions to understand how each species contributes to the total sample.
+
+```{r}
+ggplot(data=clean_penguins, aes(x=species))+
+  geom_bar(fill = c("coral2", "chartreuse2", "cadetblue2"),
+               col = c("coral3", "chartreuse4", "cadetblue4"), 
+           aes(y=after_stat(prop), group=1))+
+  labs(x="Penguin Species", y="Proportion")+
+  theme_bw()
+```
+
+Adelie penguins make up a much larger proportion of the sample, while Chinstrap penguins account for the smallest. It's important to consider how such imbalances in your dataset could influence your interpretation.
+
+We can also generate a **mosaic plot** for species. To do so, we will need to install `ggmosaic`.
+
+```{r, eval=FALSE}
+install.packages("ggmosaic")
+```
+
+```{r, message=FALSE, warning = FALSE}
+library(ggmosaic)
+
+ggplot(data=clean_penguins, aes(col=species))+
+  geom_mosaic(aes(x=product(species)), fill=c("coral2", "chartreuse2", "cadetblue2"))+
+  theme_bw() 
+```
+
+The wider the tile, the greater the proportion that species contributes. Adelie has the widest tile, which confirms it makes up the largest share of the sample.
+
+What if we want to look at penguin species by the island where they were observed? We are now dealing with two categorical variables. Mosaic plots work well here too.
+
+```{r, warning = FALSE}
+ggplot(clean_penguins) +
+  geom_mosaic(aes(x = product(island, species)), 
+              fill = rep(c("coral2", "chartreuse2", "cadetblue2"),3)) +
+  theme_bw()
+```
+
+From this plot you can see:
+
+-   Adelie appear on Biscoe, Dream, and Torgersen in roughly similar counts.
+
+-   Chinstrap are observed only on Dream.
+
+-   Gentoo are observed only on Biscoe.
+
+These patterns help explain why Adelie dominate overall, and they also show that species presence varies by island.
+
+Be sure to `detach()` your dataset before you move onto the exercises.
+
+```{r}
+detach(clean_penguins)
+```
+
+## Exercise Checkpoint 2
+
+1.  Now that you are more comfortable generating plots and summary statistics in R, it is a good time to test your skills on a new dataset, the built-in **iris** dataset. This dataset is already preloaded in RStudio, so there is no need to import anything.
+
+    To make sure it is available, you can view it by running
+
+    ```{r, eval=FALSE}
+    View(iris)
+    ```
+
+    This will open the dataset in a new tab in RStudio so you can explore its structure and variables before starting your analysis.
+
+    a\. How many variables are in the `iris` dataset? `r fitb(5)`
+
+    b\. How many observations are in the `iris` dataset? `r fitb(150)`
+
+    c\. How many categorical variables are in the `iris` dataset? `r fitb(1)`
+
+    d\. How many numerical variables are in the `iris` dataset? `r fitb(4)`
+
+    e\. How many species are in the `iris` dataset? `r fitb(3)`
+
+    f\. What are the names of the three species in the `iris` dataset? Please list them in **alphabetical order**, separated by commas (for example: `x, y, z`) `r fitb("setosa, versicolor, virginica", ignore_case = TRUE, ignore_ws = TRUE, regex=TRUE)`
+
+    g\. Is `Species` nominal or ordinal? `r fitb("nominal", ignore_case = TRUE, ignore_ws = TRUE, regex=TRUE)`
+
+    h\. Is `Sepal.Length` continuous or discrete? `r fitb("continuous", ignore_case = TRUE, ignore_ws = TRUE, regex=TRUE)`
+
+    i\. What is the mean sepal width of iris varieties rounded to one decimal place? `r fitb(3.1)`
+
+    j\. What is an appropriate plot to visualise petal width against species? `r fitb("boxplot", ignore_case = TRUE, ignore_ws = TRUE, regex=TRUE)`
+
+    k\. What is an appropriate plot to visualise petal width against sepal width? `r fitb("scatterplot", ignore_case = TRUE, ignore_ws = TRUE, regex=TRUE)`
+
+2.  
