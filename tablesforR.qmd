@@ -1,7 +1,49 @@
 ---
 title: "Preparing Data for Tables"
-editor: visual
+format: 
+  live-html:
+    toc: true
+    
+resources: 
+  - "Data-sets"
+  
+execute:
+  echo: true
+  warning: false
+  message: false
+
+webr:
+  editor: true
+  render-df: gt-interactive
+    
+embed-resources: true
+
+filters:
+  - custom-numbered-blocks
+
+custom-numbered-blocks:
+  classes:
+    Assumption:
+      colors: [FFCDD2, F44336]
+      boxstyle: foldbox.simple
+      collapse: false
+    Example:
+      colors: [BBDEFB, 2196F3]
+      boxstyle: foldbox.simple
+      collapse: false
+    Exercise:
+      colors: [C8E6C9, 4CAF50]
+      boxstyle: foldbox.simple
+      collapse: false
+    Technical-point:
+      colors: [FFF9C4, FFEB3B]
+      boxstyle: foldbox.simple
+      collapse: true
 ---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+{{< include ./_extensions/r-wasm/live/_gradethis.qmd >}}
 
 Now that we've covered the main types of variables, we can start thinking about how to prepare and visually represent data with figures and tables. In this section, we will focus on preparing data for tables.
 
@@ -13,7 +55,7 @@ Cleaning data can be the most time-consuming, yet arguably the most important, p
 
 To understand R, we will examine these concepts using real-world datasets.
 
-### NAPLAN 
+### NAPLAN
 
 ![](images/n-k-gWFW3TCdsps-unsplash.jpg){fig-align="center" width="490"}
 
@@ -22,6 +64,10 @@ To understand R, we will examine these concepts using real-world datasets.
 The first dataset to be explored is the NAPLAN dataset. NAPLAN stands for the National Assessment Program - Literacy and Numeracy, and is an annual national assessment for all students in year 3, 5, 7, and 9. The assessment is designed to evaluate whether students are building essential literacy and numeracy skills (https://www.nap.edu.au/naplan/faqs/naplan--general).
 
 To load in the dataset, we can use the `read.csv()` function.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(webexercises)
+```
 
 ```{r}
 naplan <- read.csv("Data-sets/naplan_reading.csv")
@@ -92,7 +138,7 @@ attach(naplan)
 
 If we type `naplan` directly in, we can see the content.
 
-```{r}
+```{r, eval=FALSE}
 naplan
 ```
 
@@ -105,14 +151,14 @@ View(naplan)
 We can also select parts of the dataframe. In R, we subset by calling the dataset followed by `[,]` . Writing a blank space before the comma indicates that all rows are includes, while a blank space after the comma indicates that all columns are included. For example, `[,3]` selects the third column of a dataframe. If we want to select the first three columns, we can write:
 
 ```{r}
-# Select the first three columns of the Naplan dataset
-naplan[,1:3]
+# Select the first three rows and three columns of the Naplan dataset
+naplan[1:3,1:3]
 ```
 
 Perhaps we only want to select the middle rows for all the columns of the dataframe.
 
 ```{r}
-# Select the fifth and sixth row of the Naplan dataset
+# Select the fifth and sixth row of the Naplan dataset with 
 naplan[5:6,]
 ```
 
@@ -121,14 +167,14 @@ We can even select rows based on logical tests on the values of one or more vari
 ```{r}
 # Select all rows (observations) that have a reading time at 
 # home greater than 30 mins and a naplan reading score greater than 800
-naplan[reading_time_home > 30 & naplan_reading_score > 800,]
+naplan[reading_time_home > 30 & naplan_reading_score > 860,]
 ```
 
 We can also sort the rows and the columns in the dataset. By default, R will sort in ascending order.
 
 ```{r}
 # Order the naplan reading score (ascending)
-naplan[order(naplan_reading_score),]
+naplan[order(naplan$naplan_reading_score), ][1:10, ]
 ```
 
 We can also sort and select odd-numbered columns.
@@ -136,7 +182,7 @@ We can also sort and select odd-numbered columns.
 ```{r}
 # Order the naplan reading score (ascending) 
 # and select only odd-numbered columns
-naplan[order(naplan_reading_score), c(1, 3, 5, 7, 9, 11)]
+naplan[order(naplan_reading_score), c(1, 3, 5, 7, 9, 11)][1:3,]
 ```
 
 Or descending order.
@@ -144,7 +190,7 @@ Or descending order.
 ```{r}
 # Order the naplan reading score (descending)
 # and select only odd-numbered columns
-naplan[rev(order(naplan_reading_score)), c(1, 3, 5, 7, 9, 11)]
+naplan[rev(order(naplan_reading_score)), c(1, 3, 5, 7, 9, 11)][1:3,]
 ```
 
 We can summarise the content of the dataframe as well.
@@ -175,15 +221,15 @@ aggregate(naplan[,c(4,11)], list(Grade = grade),mean)
 aggregate(naplan[,c(4,11)], list(Grade = grade, "Parent Education" = parent_education),mean)
 ```
 
-### Exercise: Palmer Penguins 
+### Exercise: Palmer Penguins
 
-![](images/derek-oyen-3Xd5j9-drDA-unsplash (1).jpg){fig-align="center" width="542"}
+![](images/derek-oyen-3Xd5j9-drDA-unsplash%20(1).jpg){fig-align="center" width="542"}
 
 *Photo by [Derek Oyen](https://unsplash.com/@goosegrease?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/penguins-on-snow-covered-fields-during-daytime-3Xd5j9-drDA?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)*
 
 First, we will need to load in some data into R. We will be working with the `palmerpenguins` package. The `palmerpenguins` package is a dataset collected and made available by [Dr. Kristen Gorman](https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php) and the [Palmer Station, Antarctica LTER](https://pallter.marine.rutgers.edu/), a member of the [Long Term Ecological Research Network](https://lternet.edu/).
 
-If you have not used this package before, you will need to install it first:
+If you have not used this package before, you will need to install it first.
 
 ```{r, eval=FALSE}
 install.packages("palmerpenguins")
@@ -191,31 +237,152 @@ install.packages("palmerpenguins")
 
 Once installed, you will need to load the package into R.
 
-```{r, warning = FALSE, echo=TRUE, message=FALSE}
+```{r, warning = FALSE, echo=FALSE, message=FALSE}
 library(palmerpenguins)
 ```
 
-Now that we have the package installed, let's take a look at the variables in the dataset using `str()`.
+```{webr}
+#| exercise: ex_1.2.1
+#| envir: Ex1
+#| warning: false
+#| message: false
+# Load in the `palmerpenguins` package
+```
 
-```{r}
+```{webr}
+#| exercise: ex_1.2.1
+#| solution: true
+#| envir: Ex1
+# Load in the `palmerpenguins` package
+library(palmerpenguins)
+```
+
+```{webr}
+#| exercise: ex_1.2.1
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+Now that we have the package installed, let's take a look at the variables in the dataset using `str()` on the `penguins` dataset.
+
+```{webr}
+#| exercise: ex_1.2.2
+#| envir: Ex1
+#| warning: false
+#| message: false
+# Call str() on `penguins`
+```
+
+```{webr}
+#| exercise: ex_1.2.2
+#| solution: true
+#| envir: Ex1
+# Call str() on `penguins`
 str(penguins)
 ```
 
-You might notice that some values are listed as `NA`. This means there are missing observations. To check for missing values, we can use:
+```{webr}
+#| exercise: ex_1.2.2
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
 
-```{r}
+```{r, echo=FALSE, eval=FALSE}
+str(penguins)
+```
+
+You might notice that some values are listed as `NA`. This means there are missing observations. To check for missing values, try using the embedded any(is.na()) function.
+
+```{webr}
+#| exercise: ex_1.2.3
+#| envir: Ex1
+#| warning: false
+#| message: false
+# Try using any(is.na()) on the `penguins` dataset.
+```
+
+```{webr}
+#| exercise: ex_1.2.3
+#| solution: true
+#| envir: Ex1
+# Try using any(is.na()) on the `penguins` dataset.
 any(is.na(penguins))
 ```
 
-Since this returns `TRUE`, we know there are missing values in the dataset. Let's find out how many:
+```{webr}
+#| exercise: ex_1.2.3
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
 
-```{r}
+```{r, echo=FALSE, eval=FALSE}
+any(is.na(penguins))
+```
+
+Since this returns `TRUE`, we know there are missing values in the dataset. Let's find out how many.
+
+```{webr}
+#| exercise: ex_1.2.4
+#| envir: Ex1
+#| warning: false
+#| message: false
+# Try using sum(is.na()) on the `penguins` dataset.
+```
+
+```{webr}
+#| exercise: ex_1.2.4
+#| solution: true
+#| envir: Ex1
+# Try using sum(is.na()) on the `penguins` dataset.
 sum(is.na(penguins))
 ```
 
-There are 19 missing observations. This can cause problems when generating numerical summaries or running statistical tests. At this stage, to handle this, we can remove the missing values. It's always best practice to store your cleaned data in a new dataset and leave the original untouched. **Note that you should always be careful when removing observations, as even partially filled observations can still provide valuable information.**
+```{webr}
+#| exercise: ex_1.2.4
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
 
-```{r}
+```{r, echo = FALSE, eval=FALSE}
+sum(is.na(penguins))
+```
+
+There are `r fitb(19)` missing observations. This can cause problems when generating numerical summaries or running statistical tests. At this stage, to handle this, we can remove the missing values. It's always best practice to store your cleaned data in a new dataset and leave the original untouched. **Note that you should always be careful when removing observations, as even partially filled observations can still provide valuable information.**
+
+```{webr}
+#| exercise: ex_1.2.5
+#| envir: Ex1
+#| warning: false
+#| message: false
+# Use na.omit() on the dataset to remove any missing values. 
+# Call this new dataset `clean_penguins` 
+clean_penguins <- 
+```
+
+```{webr}
+#| exercise: ex_1.2.5
+#| solution: true
+#| envir: Ex1
+clean_penguins <- na.omit(penguins)
+```
+
+```{webr}
+#| exercise: ex_1.2.5
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+```{r, echo= = FALSE}
 clean_penguins <- na.omit(penguins)
 ```
 
@@ -227,31 +394,102 @@ str(clean_penguins)
 
 We can see that there are eight variables. Three of these are categorical: `species`, `island`, and `sex`. These are stored as factors, where the *levels* represent the number of distinct labels or groups within each variable. For example, `sex` has two levels: `male` and `female`.
 
-You'll notice that there are four numerical variables: `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, and `year`. If your instinct is that `year` doesn't quite fit as right as a numerical variable, you would be right! It is better to treat `year` as a categorical variable. To convert it, we can use:
+You'll notice that there are four numerical variables: `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, and `year`. If your instinct is that `year` doesn't quite fit as right as a numerical variable, you would be right! It is better to treat `year` as a categorical variable.
 
-```{r}
+How do we manually convert `year` to a factor?
+
+```{webr}
+#| exercise: ex_1.2.6
+#| envir: Ex1
+#| warning: false
+#| message: false
+
+```
+
+```{webr}
+#| exercise: ex_1.2.6
+#| solution: true
+#| envir: Ex1
 clean_penguins$year <- as.factor(clean_penguins$year)
 ```
 
-Now if we run `str` again, we can see that `year` is now correctly stored as a categorical variable with three levels.
-
-```{r}
-str(clean_penguins)
+```{webr}
+#| exercise: ex_1.2.6
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
 ```
 
-If you're interested in seeing the unique groupings or labels within a categorical variable, you can use the `unique()` function.
+
+```{r, echo=FALSE}
+clean_penguins$year <- as.factor(clean_penguins$year)
+```
+
+Now if we run `class()`, we can see that `year` is now correctly stored as a categorical variable with three levels.
 
 ```{r}
+class(clean_penguins$year)
+```
+
+How can we check the unique groupings or labels within `year`?
+
+```{webr}
+#| exercise: ex_1.2.7
+#| envir: Ex1
+#| warning: false
+#| message: false
+# Check the unique groupings or labels within `year`
+```
+
+```{webr}
+#| exercise: ex_1.2.7
+#| solution: true
+#| envir: Ex1
 unique(clean_penguins$year)
 ```
 
-This shows that the data was collected over the years 2007, 2008, and 2009.
+```{webr}
+#| exercise: ex_1.2.7
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+```{r, echo=FALSE, eval = FALSE}
+unique(clean_penguins$year)
+```
+
+This shows that the data was collected over the years `r fitb(2007)`, `r fitb(2008)`, and `r fitb(2009)` (ascending order).
 
 You can also see from the structure output `str()` that the `penguins` dataset is stored as a 333 x 8 tibble, which is a type of data frame in R. This means that there are 333 rows (observations) and 8 columns (variables).
 
-We can confirm this using the `dim()` function.
+Check the dimensions of the cleaned dataset to confirm this.
 
-```{r}
+```{webr}
+#| exercise: ex_1.2.8
+#| envir: Ex1
+#| warning: false
+#| message: false
+```
+
+```{webr}
+#| exercise: ex_1.2.8
+#| solution: true
+#| envir: Ex1
+dim(clean_penguins)
+```
+
+```{webr}
+#| exercise: ex_1.2.8
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+```{r, echo=FALSE, eval=FALSE}
 dim(clean_penguins)
 ```
 
@@ -262,6 +500,8 @@ View(penguins)
 View(clean_penguins)
 ```
 
+### Tables
+
 Now that we've inspected the dataset, we can start thinking about how to visually represent and understand the data.
 
 As we have learnt
@@ -269,7 +509,7 @@ As we have learnt
 ```{r, message = FALSE, warning=FALSE}
 library(gt)
 library(tidyverse)
-
+library(kableExtra)
 ```
 
 ```{r}
@@ -447,6 +687,5 @@ naplan %>%
     1:10,
     background = "gray95",
     extra_css = "border-left: 3px solid gray50; border-right: 3px solid gray50;"
-  ) %>%
-  footnote(general = "SES Index represents ...", general_title = "")
+  )  %>%  footnote(general = "SES Index represents ...", general_title = "")
 ```

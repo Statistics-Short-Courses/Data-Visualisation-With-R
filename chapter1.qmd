@@ -122,38 +122,38 @@ Now we can attach the cleaned `penguins` dataset. Attaching the dataset allows u
 
 ```{r, message=F}
 # Attach cleaned dataset 
-attach(clean_penguins)
+#attach(clean_penguins)
 ```
 
 ```{r}
 # Let's first calculate the mean and round it to one decimal place
-round(mean(body_mass_g),1)
+#round(mean(body_mass_g),1)
 
 # Now we can calculate the standard deviation
-round(sd(body_mass_g),1)
+#round(sd(body_mass_g),1)
 ```
 
 The average body mass of penguins is **4207.1 g**, with a standard deviation of **805.2 g**.
 
 ```{r}
 # calculate the minimum
-min(body_mass_g)
+#min(body_mass_g)
 
 # calculate the maximum
-max(body_mass_g)
+#max(body_mass_g)
 ```
 
 The minimum observed body mass is **2700 g**, and the maximum observed body mass is **6300 g**.
 
 ```{r}
 # calculate median
-median(body_mass_g)
+#median(body_mass_g)
 
 # calculate IQR
 ## first quantile
-quantile(body_mass_g, 0.25)
+#quantile(body_mass_g, 0.25)
 ## third quantile 
-quantile(body_mass_g, 0.75)
+#quantile(body_mass_g, 0.75)
 ```
 
 The median body mass is **4050 g**, with an interquartile range from **3350 g to 4775 g.**
@@ -162,7 +162,7 @@ The `summary()` function lets us quickly gather all of this information at once.
 
 ```{r}
 # Calculate 5-point summary
-summary(body_mass_g)
+#summary(body_mass_g)
 ```
 
 Exercise checkpoint

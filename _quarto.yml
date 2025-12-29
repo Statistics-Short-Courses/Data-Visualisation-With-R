@@ -11,11 +11,7 @@ book:
   chapters:
   - index.qmd
   - intro.qmd
-  - chapter1.qmd
   - tablesforR.qmd
-  - chapter2.qmd
-  - chapter3.qmd
-  - summary.qmd
   - references.qmd
   page-navigation: false
   

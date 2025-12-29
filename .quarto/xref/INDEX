@@ -16,5 +16,11 @@
   },
   "references.qmd": {
     "references.html": "9b588dca"
+  },
+  "tablesforR.qmd": {
+    "tablesforR.html": "ed31fc77"
+  },
+  "chapter3.qmd": {
+    "chapter3.html": "66e367e8"
   }
 }
