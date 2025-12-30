@@ -329,6 +329,107 @@ ggplot(data=rice, aes(x=HI, y=Plant.height..cm.))+
 
 ![](images/ggplotscatter.png)
 
+### Quantitative and Qualitative Variables
+
+You may also wish to create plots between quantitative and qualitative variables. Does plant height differ between variety of rice? How does header yield between sowing methods? In this case, a boxplot is helpful to visualise the relationship. 
+
+
+Fill in in the blanks below for creating a boxplot of groups representing different nitogen rates `N.group` versus plant height `Plant.height..cm.`
+```{webr}
+#| exercise: ex_2.2.3
+#| envir: Ex1
+#| warning: false
+#| message: false
+# Fill in the blanks
+ggplot(_____, aes(x=_____, y=_____))+
+  geom_boxplot(fill="#EF8354", col="#DF3B57")+
+  ___(x="Nitrogen Rate Group",y="Rice Plant Height (cm)")+
+  theme_bw()
+```
+
+```{webr}
+#| exercise: ex_2.2.3
+#| solution: true
+#| envir: Ex1
+ggplot(rice, aes(x=N.group, y=Plant.height..cm.))+
+  geom_boxplot(fill="#EF8354", col="#DF3B57")+
+  labs(x="Nitrogen Rate Group",y="Rice Plant Height (cm)")+
+  theme_bw()
+```
+
+```{webr}
+#| exercise: ex_2.2.3
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+```{r, echo=FALSE, eval=FALSE}
+ggplot(rice, aes(x=N.group, y=Plant.height..cm.))+
+  geom_boxplot(fill="#EF8354", col="#DF3B57")+
+  labs(x="Nitrogen Rate Group",y="Rice Plant Height (cm)")+
+  theme_bw()
+```
+You can also customise even further.
+
+```{r}
+ggplot(rice, aes(x=N.group, y=Plant.height..cm.))+
+  geom_boxplot(fill=c("#D8A47F",
+                      "#EF8354", 
+                      "#EE4B6A",
+                      "#0F7173",
+                      "#D8A47F",
+                      "#EF8354", 
+                      "#EE4B6A",
+                      "#0F7173"),
+               col=c("#C57A44",
+                     "#EA5C1F",
+                     "#EA1F44",
+                     "#094748",
+                     "#C57A44",
+                     "#EA5C1F",
+                     "#EA1F44",
+                     "#094748"))+
+  labs(x="Nitrogen Rate Group",y="Rice Plant Height (cm)",
+       title="Rice Plant Heights vs. Nitogen Rate by Sowing Method")+
+  theme_bw()+
+  facet_wrap(~Sowing.method)
+```
+Or a bit neater is to map to the `N.group`rather than repeatedly typing the colours:
+
+```{r, eval=FALSE}
+ggplot(rice, aes(x = N.group, y = Plant.height..cm., fill = N.group, colour = N.group)) +
+  geom_boxplot() +
+  scale_fill_manual(values = c("#D8A47F", "#EF8354", "#EE4B6A", "#0F7173")) +
+  scale_colour_manual(values = c("#C57A44", "#EA5C1F", "#EA1F44", "#094748")) +
+  labs(x = "Nitrogen Rate Group", y = "Rice Plant Height (cm)",
+       title="Rice Plant Heights vs. Nitogen Rate by Sowing Method") +
+  theme_bw() +
+  facet_wrap(~Sowing.method)
+```
+
+
+Try creating a boxplot of Header Yield (machine-harvested grain yield, tonnes per hectare at 14% moisture) versus sowing method on your own, and customise it to your liking. 
+
+`r hide("Show code")`
+
+```{r}
+ggplot(rice, aes(x = Sowing.method, y = Header.Yield..t.ha..14.., fill = Sowing.method, 
+                 colour = Sowing.method)) +
+  geom_boxplot() +
+  scale_fill_manual(values = c("#A05475", "#EE586C")) +
+  scale_colour_manual(values = c("#3B1F2B", "#D8162F")) +
+  labs(x = "Sowing Method", y = "Header Yield (Tonnes per Hectare*)",
+       title="Sowing Method vs. Header Yield by Nitrogen Group",
+       caption = "*At 14% Moisture") +
+  theme_classic() +
+  facet_wrap(~N.group)
+```
+
+`r unhide()`
+
+
 # Palmer Penguins
 
 ```{r, message = FALSE, warning = FALSE}
