@@ -1,31 +1,348 @@
 ---
 title: "How To Visualise Numerical Data"
+format: 
+  live-html:
+    toc: true
+resources: 
+  - "Data-sets"
+  
+execute:
+  echo: true
+  warning: false
+  message: false
+
+webr:
+  editor: true
+  render-df: gt-interactive
+    
+embed-resources: true
+
+filters:
+  - custom-numbered-blocks
+
+custom-numbered-blocks:
+  classes:
+    Assumption:
+      colors: [FFCDD2, F44336]
+      boxstyle: foldbox.simple
+      collapse: false
+    Example:
+      colors: [BBDEFB, 2196F3]
+      boxstyle: foldbox.simple
+      collapse: false
+    Exercise:
+      colors: [C8E6C9, 4CAF50]
+      boxstyle: foldbox.simple
+      collapse: false
+    Technical-point:
+      colors: [FFF9C4, FFEB3B]
+      boxstyle: foldbox.simple
+      collapse: true
 ---
 
-### Histograms
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
-When you have one numerical variable, whether discrete or continuous, a **histogram** is a great way to visualise its distribution.
+{{< include ./_extensions/r-wasm/live/_gradethis.qmd >}}
 
-We’ll use the `ggplot2` package for this. If you haven’t used it before, you’ll need to install it first.
-
-```{r, eval=FALSE}
-# Install the package
-install.packages(ggplot2)
+```{r, echo=FALSE}
+library(webexercises)
 ```
 
-Once installed, you can load the package and start plotting.
+
+We have learnt how to visualise data using tables, which are useful for both analysts and readers when examining a dataset.
+
+However, tables are not always the most effective way to quickly and intuitively understand patterns or trends in the data. This is where figures become valuable.
+
+In this chapter, we will focus on different types of figures that can be used to represent quantitative variables. For plot interpretation, refer to the **Inferential Statistics With R** short course.
+
+# Rice
+
+![](images/zhao-yangjun-dDAzpSUAbgI-unsplash.jpg){width="455"}
+
+*Photo by [Zhao Yangjun](https://unsplash.com/@youngjun420?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/a-large-field-of-green-grass-with-a-sky-background-dDAzpSUAbgI?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)*
+
+In this chapter, we are going to explore the rice dataset.
+
+Try loading in the `rice_data` data yourself. Name the dataframe object `rice`. Then, answer the questions below.
+
+```{webr}
+#| exercise: ex_2.1.0
+#| envir: Ex1
+#| warning: false
+#| message: false
+# Load in the data
+
+# Check the structure of the data 
+```
+
+```{webr}
+#| exercise: ex_2.1.0
+#| solution: true
+#| envir: Ex1
+rice <- read.csv("Data-sets/rice_data.csv")
+str(rice)
+```
+
+```{webr}
+#| exercise: ex_2.1.0
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+```{r, echo=FALSE}
+rice <- read.csv("Data-sets/rice_data.csv")
+
+```
+
+```{r, echo=FALSE, eval=FALSE}
+str(rice)
+```
+
+1.  How many variables are in the `rice` dataset? `r fitb(23)`
+2.  How many observations are in the `rice` dataset? `r fitb(1778)`
+3.  How many categorical variables are there? (Hint: they may not be stored correctly...yet) `r fitb(12)`
+4.  How many categorical variables are there? (Hint: they may not be stored correctly...yet) `r fitb(11)`
+5.  What type of variable has R stored them? `r fitb("character", ignore_case = TRUE, ignore_ws = TRUE)`
+
+As can be seen, there is some cleaning up to do! You may also notice that there are observations that are "\*". This represents a missing value. We can convert it to NA and then drop it from our dataset.
+
+Fill in the blanks below.
+
+```{webr}
+#| exercise: ex_2.1.1
+#| envir: Ex1
+#| warning: false
+#| message: false
+# Load in tidyverse
+
+# Tidy up the dataset by filling in the blanks
+rice <- rice %>%
+  mutate(across(where(is.character), ~ na_if(.x, "*"))) %>%
+  drop_na() %>%
+  ______(_____(
+    c(
+      Ref, Experiment.site, Year, Exp.name, Sowing.method,
+      RANGE, ROW, REP, Variety, Nitrogen, N.group, Lodging..10.flat.
+    ),
+    ______
+  )) %>%
+  _____(_____(where(is.character), as.numeric))
+```
+
+```{webr}
+#| exercise: ex_2.1.1
+#| solution: true
+#| envir: Ex1
+
+library(tidyverse)
+
+rice <- rice %>%
+  mutate(across(where(is.character), ~ na_if(.x, "*"))) %>%
+  drop_na() %>%
+  mutate(across(
+    c(
+      Ref, Experiment.site, Year, Exp.name, Sowing.method,
+      RANGE, ROW, REP, Variety, Nitrogen, N.group, Lodging..10.flat.
+    ),
+    as.factor
+  )) %>%
+  mutate(across(where(is.character), as.numeric))
+```
+
+```{webr}
+#| exercise: ex_2.1.1
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+```{r, echo = FALSE}
+rice <- rice %>%
+  mutate(across(where(is.character), ~ na_if(.x, "*"))) %>%
+  drop_na() %>%
+  mutate(across(
+    c(
+      Ref, Experiment.site, Year, Exp.name, Sowing.method,
+      RANGE, ROW, REP, Variety, Nitrogen, N.group, Lodging..10.flat.
+    ),
+    as.factor
+  )) %>%
+  mutate(across(where(is.character), as.numeric))
+
+```
+
+Let's check the structure again to make sure everything has been cleaned up correctly.
+
+```{webr}
+#| exercise: ex_2.1.2
+#| envir: Ex1
+#| warning: false
+#| message: false
+
+```
+
+```{webr}
+#| exercise: ex_2.1.2
+#| solution: true
+#| envir: Ex1
+str(rice)
+```
+
+```{webr}
+#| exercise: ex_2.1.2
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+Yay! Now that the dataset is cleaned, we can move onto plotting.
+
+### One Quantitative Variable
+
+When you have a single numerical variable, whether discrete or continuous, a ***histogram*** is a great way to visualise its distribution.
+
+In R, you can create plots using base R. For example, to see a visualisation of plant height, you can simply type:
+
+```{r}
+hist(rice$Plant.height..cm.)
+```
+
+to generate a histogram.
+
+While base R plots are fine for basic analysis,`ggplot2` is one of the most commonly used plotting packages and is widely accepted in published reports.
+
+The histogram looks a bit plain without any color, and the x-axis label isn't very informative. Let's add some color, fix the labels, and give it a clean white background.
+
+Load in the package and then run the code below.
+
+```{webr}
+#| exercise: ex_2.2.1
+#| envir: Ex1
+#| warning: false
+#| message: false
+ # load in ggplot2 
+
+# run the code below
+ggplot(data=rice, aes(x=Plant.height..cm.))+
+  geom_histogram(fill="#F28123", col="#D34E24", bins=30)+
+  labs(x="Rice Plant Height (cm)")+
+  theme_bw()
+```
+
+```{webr}
+#| exercise: ex_2.2.1
+#| solution: true
+#| envir: Ex1
+library(ggplot2)
+
+ggplot(data=rice, aes(x=Plant.height..cm.))+
+  geom_histogram(fill="#F28123", col="#D34E24", bins=30)+
+  labs(x="Rice Plant Height (cm)")+
+  theme_bw()
+```
+
+```{webr}
+#| exercise: ex_2.2.1
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+```{r, echo = FALSE, eval=FALSE}
+ggplot(data=rice, aes(x=Plant.height..cm.))+
+  geom_histogram(fill="#F28123", col="#D34E24", bins=30)+
+  labs(x="Rice Plant Height (cm)", y="Frequency")+
+  theme_bw()
+```
+
+We can see that this is much better!
+
+![](images/ggplothist.png)
+
+It is very important that when you create a plot, you provide meaningful labels with units. You can view below how different bins influence
+
+```{r}
+ggplot(data=rice, aes(x=Plant.height..cm.))+
+  geom_histogram(fill="#F28123", col="#D34E24", bins=10)+
+  labs(x="Rice Plant Height (cm)", y="Frequency")+
+  theme_bw()
+```
+
+```{r}
+ggplot(data=rice, aes(x=Plant.height..cm.))+
+  geom_histogram(fill="#F28123", col="#D34E24", bins=100)+
+  labs(x="Rice Plant Height (cm)", y="Frequency")+
+  theme_bw()
+```
+
+### Two Quantitative Variables
+
+To visualise two quantitative variables, a **scatterplot** is appropriate.
+
+Fill in the blanks below to create a scatterplot of HI versus Plant Growth.
+
+```{webr}
+#| exercise: ex_2.2.2
+#| envir: Ex1
+#| warning: false
+#| message: false
+# Fill in the blanks
+ggplot(_____, aes(x=HI, y=_____))+
+  geom_point(fill="#EADF0B", col="#563F1B", pch=21, size=3)+
+  labs(x="HI",y="Rice Plant Height (cm)")+
+  theme_bw()
+```
+
+```{webr}
+#| exercise: ex_2.2.2
+#| solution: true
+#| envir: Ex1
+ggplot(data=rice, aes(x=HI, y=Plant.height..cm.))+
+  geom_point(fill="#EADF0B", col="#563F1B", pch=21, size=3)+
+  labs(x="HI",y="Rice Plant Height (cm)")+
+  theme_bw()
+```
+
+```{webr}
+#| exercise: ex_2.2.2
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+```{r, echo=FALSE, eval=FALSE}
+ggplot(data=rice, aes(x=HI, y=Plant.height..cm.))+
+  geom_point(fill="#EADF0B", col="#563F1B", pch=21, size=3)+
+  labs(x="HI",y="Rice Plant Height (cm)")+
+  theme_bw()
+```
+
+![](images/ggplotscatter.png)
+
+# Palmer Penguins
 
 ```{r, message = FALSE, warning = FALSE}
 # Load the library
+
 library(ggplot2)
+library(palmerpenguins)
+clean_penguins <- na.omit(penguins)
 
 # We can plot the histogram
 ggplot(clean_penguins, aes(x=body_mass_g))+
   geom_histogram()
          
 ```
-
-The histogram looks a bit plain without any color, and the x-axis label isn’t very informative. Let’s add some color, fix the labels, and give it a clean white background.
 
 ```{r}
 # We can plot the histogram
@@ -50,10 +367,9 @@ ggplot(penguins, aes(body_mass_g, after_stat(density), colour = species)) +
   geom_freqpoly(binwidth = 100)
 ```
 
+### Scatterplots
 
-### Scatterplots 
-
-What if we’re interested in how body mass relates to flipper length? In this case, we’re working with two continuous numerical variables, so a **scatterplot** would be a good choice.
+What if we're interested in how body mass relates to flipper length? In this case, we're working with two continuous numerical variables, so a **scatterplot** would be a good choice.
 
 ```{r}
 ggplot(clean_penguins, aes(x=body_mass_g, y=flipper_length_mm))+

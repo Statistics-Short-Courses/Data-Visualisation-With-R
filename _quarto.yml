@@ -12,6 +12,7 @@ book:
   - index.qmd
   - intro.qmd
   - tablesforR.qmd
+  - chapter2.qmd
   - references.qmd
   page-navigation: false
   
