@@ -93,7 +93,6 @@ gradethis::grade_this_code()
 
 ```{r, echo=FALSE}
 rice <- read.csv("Data-sets/rice_data.csv")
-
 ```
 
 ```{r, echo=FALSE, eval=FALSE}
@@ -165,8 +164,8 @@ library(tidyverse)
 
 ```{r, echo = FALSE}
 rice <- rice %>%
+  mutate(across(where(is.character), str_squish)) %>%
   mutate(across(where(is.character), ~ na_if(.x, "*"))) %>%
-  drop_na() %>%
   mutate(across(
     c(
       Ref, Experiment.site, Year, Exp.name, Sowing.method,
@@ -272,15 +271,30 @@ It is very important that when you create a plot, you provide meaningful labels 
 
 ```{r}
 ggplot(data=rice, aes(x=Plant.height..cm.))+
-  geom_histogram(fill="#F28123", col="#D34E24", bins=10)+
+  geom_histogram(fill="palegreen3", col="darkgreen", bins=10)+
   labs(x="Rice Plant Height (cm)", y="Frequency")+
   theme_bw()
 ```
 
 ```{r}
 ggplot(data=rice, aes(x=Plant.height..cm.))+
-  geom_histogram(fill="#F28123", col="#D34E24", bins=100)+
+  geom_histogram(fill="palegreen3", col="darkgreen", bins=100)+
   labs(x="Rice Plant Height (cm)", y="Frequency")+
+  theme_bw()
+```
+We can make the histogram even more informative by filling in the colour by sowing method. Do the plant heights differ between 
+
+```{r, message=FALSE, warning = FALSE}
+ggplot(data=rice, aes(x=Plant.height..cm., fill=Sowing.method))+
+  geom_histogram(binwidth=2)+
+  labs(x="Rice Plant Height (cm)", y="Frequency")+ 
+  theme_bw()
+```
+
+```{r, message=FALSE, warning = FALSE}
+ggplot(data=rice, aes(x=Plant.height..cm., col=Sowing.method))+
+  geom_freqpoly(binwidth=2)+
+  labs(x="Rice Plant Height (cm)", y="Frequency")+ 
   theme_bw()
 ```
 
@@ -297,7 +311,7 @@ Fill in the blanks below to create a scatterplot of HI versus Plant Growth.
 #| message: false
 # Fill in the blanks
 ggplot(_____, aes(x=HI, y=_____))+
-  geom_point(fill="#EADF0B", col="#563F1B", pch=21, size=3)+
+  geom_point(fill="darkolivegreen3", col="darkolivegreen", pch=21, size=3)+
   labs(x="HI",y="Rice Plant Height (cm)")+
   theme_bw()
 ```
@@ -307,7 +321,7 @@ ggplot(_____, aes(x=HI, y=_____))+
 #| solution: true
 #| envir: Ex1
 ggplot(data=rice, aes(x=HI, y=Plant.height..cm.))+
-  geom_point(fill="#EADF0B", col="#563F1B", pch=21, size=3)+
+  geom_point(fill="darkolivegreen3", col="darkolivegreen", pch=21, size=3)+
   labs(x="HI",y="Rice Plant Height (cm)")+
   theme_bw()
 ```
@@ -322,10 +336,12 @@ gradethis::grade_this_code()
 
 ```{r, echo=FALSE, eval=FALSE}
 ggplot(data=rice, aes(x=HI, y=Plant.height..cm.))+
-  geom_point(fill="#EADF0B", col="#563F1B", pch=21, size=3)+
+  geom_point(fill="darkolivegreen3", col="darkolivegreen", pch=21, size=3)+
   labs(x="HI",y="Rice Plant Height (cm)")+
+  geom_smooth(method="lm", col="black")+
   theme_bw()
 ```
+
 
 ![](images/ggplotscatter.png)
 
@@ -369,7 +385,7 @@ gradethis::grade_this_code()
 ggplot(rice, aes(x=N.group, y=Plant.height..cm.))+
   geom_boxplot(fill="#EF8354", col="#DF3B57")+
   labs(x="Nitrogen Rate Group",y="Rice Plant Height (cm)")+
-  theme_bw()
+  theme_bw() 
 ```
 You can also customise even further.
 
