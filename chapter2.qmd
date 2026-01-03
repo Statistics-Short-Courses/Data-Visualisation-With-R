@@ -154,7 +154,7 @@ str(rice)
 1.  How many variables are in the `rice` dataset? `r fitb(23)`
 2.  How many observations are in the `rice` dataset? `r fitb(1778)`
 3.  How many categorical variables are there? (Hint: they may not be stored correctly...yet) `r fitb(12)`
-4.  How many categorical variables are there? (Hint: they may not be stored correctly...yet) `r fitb(11)`
+4.  How many numerical variables are there? (Hint: they may not be stored correctly...yet) `r fitb(11)`
 5.  What type of variable has R stored them? `r fitb("character", ignore_case = TRUE, ignore_ws = TRUE)`
 
 You may notice that some data cleaning is required.
@@ -185,7 +185,49 @@ In these short courses, imputation is beyond the scope of the material covered, 
 
 Before exploring the missing data, let's do a quick clean. There are some trailing whitespace issues in a few observations, and we also want to focus on the \* entries and convert these to NA. We then filter out any blank rows and remove the repeated header row.
 
-```{r, message=FALSE}
+```{webr}
+#| exercise: ex_2.1.0.1
+#| envir: Ex1
+#| warning: false
+#| message: false
+# Run the code below to clean the data.
+library (dplyr)
+
+clean_rice <- rice %>%
+  # Convert "*" to NA
+  mutate(across(where(is.character),
+                ~ na_if(.x, "*"))) %>%
+  # Drop fully blank rows
+  filter(if_any(everything(), ~ !is.na(.x) & .x != "")) %>%  
+  # Drop repeated header row
+  filter(Sowing.method != "Sowing method")  
+```
+
+```{webr}
+#| exercise: ex_2.1.0.1
+#| solution: true
+#| envir: Ex1
+library (dplyr)
+
+clean_rice <- rice %>%
+  # Convert "*" to NA
+  mutate(across(where(is.character),
+                ~ na_if(.x, "*"))) %>%
+  # Drop fully blank rows
+  filter(if_any(everything(), ~ !is.na(.x) & .x != "")) %>%  
+  # Drop repeated header row
+  filter(Sowing.method != "Sowing method")  
+```
+
+```{webr}
+#| exercise: ex_2.1.0
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+```{r, message=FALSE, echo=FALSE}
 library (dplyr)
 
 clean_rice <- rice %>%
