@@ -48,7 +48,6 @@ custom-numbered-blocks:
 library(webexercises)
 ```
 
-
 We have learnt how to visualise data using tables, which are useful for both analysts and readers when examining a dataset.
 
 However, tables are not always the most effective way to quickly and intuitively understand patterns or trends in the data. This is where figures become valuable.
@@ -63,7 +62,59 @@ In this chapter, we will focus on different types of figures that can be used to
 
 In this chapter, we are going to explore the rice dataset.
 
-Try loading in the `rice_data` data yourself. Name the dataframe object `rice`. Then, answer the questions below.
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+library(knitr)
+library(kableExtra)
+
+variables <- data.frame(
+  No = 1:23,
+  Variable = c(
+    "Ref", "ExpSite", "Year", "ExpName", "SowingMethod",
+    "Range", "Row", "Rep", "Variety", "Nitrogen",
+    "NGroup", "Estab", "PI_DM", "PI_Tillers", "PI_NIR",
+    "PI_N_Uptake", "PM_DM", "HarvTillers", "HI",
+    "QuadYield", "HeaderYield", "Lodging", "PlantHeight"
+  ),
+  Description = c(
+    "Reference number",
+    "Name of the site/farmer",
+    "Rice sown in October and harvested the following year",
+    "Combination of experiment site and year",
+    "Four sowing methods – Drill, Aerial, Delayed Permanent Water (DPW) and DryBC",
+    "Replicate identification number of the experiment (each treatment has 3 replicates)",
+    "Row identification number (1–24)",
+    "Same as Range",
+    "Variety of rice",
+    "Nitrogen rates (kg N/ha) applied prior to Permanent Water (PW) and at Panicle Initiation (PI)",
+    "Groups representing different nitrogen rates",
+    "Plant population at establishment (No./m²)",
+    "Weight of dry matter at PI (g/m²)",
+    "Count of tillers at PI (No./m²)",
+    "Percentage of nitrogen in tissue at PI (% N)",
+    "Nitrogen uptake at PI (kg N/ha)",
+    "Weight of dry matter at physiological maturity (g/m²)",
+    "Count of tillers at PM (No./m²)",
+    "Harvest index (ratio of grain to total plant dry weight)",
+    "Quad (hand-harvested) grain yield (t/ha at 14% moisture)",
+    "Header (machine-harvested) grain yield (t/ha at 14% moisture)",
+    "Lodging score at harvest (1 = standing, 10 = fully lodged)",
+    "Average plant height at harvest (cm)"
+  )
+)
+
+kable(
+  variables,
+  caption = "Description of Data Set Variables",
+  align = c("c", "l", "l")
+) %>%
+  kable_styling(
+    full_width = FALSE,
+    bootstrap_options = c("striped", "hover", "condensed")
+  )
+
+```
+
+Load the `rice_data.CSV` dataset yourself and store it as a dataframe called `rice`. Then answer the questions below.
 
 ```{webr}
 #| exercise: ex_2.1.0
@@ -92,7 +143,8 @@ gradethis::grade_this_code()
 ```
 
 ```{r, echo=FALSE}
-rice <- read.csv("Data-sets/rice_data.csv")
+rice <- read.csv("Data-sets/rice_data.csv",
+                 header=TRUE) 
 ```
 
 ```{r, echo=FALSE, eval=FALSE}
@@ -105,9 +157,70 @@ str(rice)
 4.  How many categorical variables are there? (Hint: they may not be stored correctly...yet) `r fitb(11)`
 5.  What type of variable has R stored them? `r fitb("character", ignore_case = TRUE, ignore_ws = TRUE)`
 
-As can be seen, there is some cleaning up to do! You may also notice that there are observations that are "\*". This represents a missing value. We can convert it to NA and then drop it from our dataset.
+You may notice that some data cleaning is required.
 
-Fill in the blanks below.
+In the middle of the Excel file (around row 1465), there is a blank row, followed by a repeated header row.
+
+```{r}
+rice[1465:1466,]
+```
+
+In addition, there are several missing values in the dataset, which are denoted by "\*".
+
+```{r}
+sum(rice == "*", na.rm = TRUE)
+```
+
+There are a few different ways we can approach missing values. The first step is to identify the **extent of missing data** and then diagnose the issue. Is the data missing completely at random (MCAR), missing at random (MAR), or missing not at random (MNAR)? In other words, is the issue structural, or is it genuinely random?
+
+Depending on the type of missing data, we might consider:
+
+-   deleting rows with missing values
+
+-   imputing missing values using the mean
+
+-   imputing missing values using MICE (Multivariate Imputation by Chained Equations)
+
+In these short courses, imputation is beyond the scope of the material covered, so we will focus on deleting missing rows (with appropriate justification). To learn how to properly treat missing data, I recommend the [*Missing Data Imputation in R*](https://libguides.princeton.edu/R-Missingdata) tutorial from Princeton.
+
+Before exploring the missing data, let's do a quick clean. There are some trailing whitespace issues in a few observations, and we also want to focus on the \* entries and convert these to NA. We then filter out any blank rows and remove the repeated header row.
+
+```{r, message=FALSE}
+library (dplyr)
+
+clean_rice <- rice %>%
+  # Convert "*" to NA
+  mutate(across(where(is.character),
+                ~ na_if(.x, "*"))) %>%
+  # Drop fully blank rows
+  filter(if_any(everything(), ~ !is.na(.x) & .x != "")) %>%  
+  # Drop repeated header row
+  filter(Sowing.method != "Sowing method")  
+
+```
+
+Let's visualise the missing values and count how many cells are missing.
+
+```{r}
+sapply(clean_rice, function(x) sum(is.na(x)))
+```
+
+```{r}
+sum(is.na(clean_rice))
+```
+
+```{r}
+library(visdat)
+vis_miss(clean_rice)
+```
+
+All treatment variables are complete, while missing values mostly occur in the response and intermediate agronomic measurements. The main example is HeaderYield, which is missing for many observations because machine-harvest data were only collected at some sites. In other words, this is structural missing data i.e. the values do not exist for certain site--season combinations rather than being randomly missing. Because of this, it makes sense to drop HeaderYield NAs only when we are visualising or analysing HeaderYield.
+
+We also see missing values in the reference number (Ref). This appears to be caused by a data import issue, where a blank row and a repeated header row were introduced in the middle of the dataset. After this point, the reference numbers are no longer populated. Since Ref is just an identifier, filling in these values would be inappropriate, so we do not attempt to impute them. Instead, the problematic rows can be removed where needed.
+
+Finally, for visualisation, we do not want to drop all rows that contain missing values, as this would remove valid data unnecessarily. Instead, for each plot, we only remove the missing values that are relevant to the variables being visualised.
+
+We now continue cleaning the data accordingly.
 
 ```{webr}
 #| exercise: ex_2.1.1
@@ -116,30 +229,32 @@ Fill in the blanks below.
 #| message: false
 # Load in tidyverse
 
-# Tidy up the dataset by filling in the blanks
-rice <- rice %>%
-  mutate(across(where(is.character), ~ na_if(.x, "*"))) %>%
-  drop_na() %>%
-  ______(_____(
+# Load in stringr
+
+# Tidy up the `clean_rice` dataset by filling in the blanks
+clean_rice <- _______ %>%
+  # Some observations contain trailing spaces, which causes identical values to be treated as different.
+  # We remove these trailing spaces to avoid this issue.
+  mutate(across(where(is.character), str_squish)) %>%
+  ___________(______(
     c(
       Ref, Experiment.site, Year, Exp.name, Sowing.method,
       RANGE, ROW, REP, Variety, Nitrogen, N.group, Lodging..10.flat.
     ),
-    ______
+    __________
   )) %>%
-  _____(_____(where(is.character), as.numeric))
+  _______(across(where(is.character), as.numeric))
 ```
 
 ```{webr}
 #| exercise: ex_2.1.1
 #| solution: true
 #| envir: Ex1
-
 library(tidyverse)
+library(stringr)
 
-rice <- rice %>%
-  mutate(across(where(is.character), ~ na_if(.x, "*"))) %>%
-  drop_na() %>%
+clean_rice <- clean_rice %>%
+  mutate(across(where(is.character), str_squish)) %>%
   mutate(across(
     c(
       Ref, Experiment.site, Year, Exp.name, Sowing.method,
@@ -147,7 +262,7 @@ rice <- rice %>%
     ),
     as.factor
   )) %>%
-  mutate(across(where(is.character), as.numeric))
+  mutate(across(where(is.character), as.numeric)) 
 ```
 
 ```{webr}
@@ -158,14 +273,12 @@ rice <- rice %>%
 gradethis::grade_this_code()
 ```
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-library(tidyverse)
-```
-
 ```{r, echo = FALSE}
-rice <- rice %>%
+library(tidyverse)
+library(stringr)
+
+clean_rice <- clean_rice %>%
   mutate(across(where(is.character), str_squish)) %>%
-  mutate(across(where(is.character), ~ na_if(.x, "*"))) %>%
   mutate(across(
     c(
       Ref, Experiment.site, Year, Exp.name, Sowing.method,
@@ -173,7 +286,7 @@ rice <- rice %>%
     ),
     as.factor
   )) %>%
-  mutate(across(where(is.character), as.numeric))
+  mutate(across(where(is.character), as.numeric)) 
 
 ```
 
@@ -191,7 +304,7 @@ Let's check the structure again to make sure everything has been cleaned up corr
 #| exercise: ex_2.1.2
 #| solution: true
 #| envir: Ex1
-str(rice)
+str(clean_rice)
 ```
 
 ```{webr}
@@ -202,7 +315,7 @@ str(rice)
 gradethis::grade_this_code()
 ```
 
-Yay! Now that the dataset is cleaned, we can move onto plotting.
+Yay! Now that the dataset is cleaned, we're ready to start plotting.
 
 ### One Quantitative Variable
 
@@ -211,7 +324,7 @@ When you have a single numerical variable, whether discrete or continuous, a ***
 In R, you can create plots using base R. For example, to see a visualisation of plant height, you can simply type:
 
 ```{r}
-hist(rice$Plant.height..cm.)
+hist(clean_rice$Plant.height..cm.)
 ```
 
 to generate a histogram.
@@ -222,17 +335,21 @@ The histogram looks a bit plain without any color, and the x-axis label isn't ve
 
 Load in the package and then run the code below.
 
+```{r}
+attach(clean_rice)
+```
+
 ```{webr}
 #| exercise: ex_2.2.1
 #| envir: Ex1
 #| warning: false
 #| message: false
- # load in ggplot2 
+# load in ggplot2 
 
 # run the code below
-ggplot(data=rice, aes(x=Plant.height..cm.))+
-  geom_histogram(fill="#F28123", col="#D34E24", bins=30)+
-  labs(x="Rice Plant Height (cm)")+
+ggplot(data=clean_rice, aes(x=Plant.height..cm.))+
+  geom_histogram(fill="palegreen3", col="darkgreen", bins=30)+
+  labs(x="Rice Plant Height (cm)", y="Frequency"))+
   theme_bw()
 ```
 
@@ -242,9 +359,9 @@ ggplot(data=rice, aes(x=Plant.height..cm.))+
 #| envir: Ex1
 library(ggplot2)
 
-ggplot(data=rice, aes(x=Plant.height..cm.))+
-  geom_histogram(fill="#F28123", col="#D34E24", bins=30)+
-  labs(x="Rice Plant Height (cm)")+
+ggplot(data=clean_rice, aes(x=Plant.height..cm.))+
+  geom_histogram(fill="palegreen3", col="darkgreen", bins=30)+
+  labs(x="Rice Plant Height (cm)", y="Frequency")+
   theme_bw()
 ```
 
@@ -256,10 +373,10 @@ ggplot(data=rice, aes(x=Plant.height..cm.))+
 gradethis::grade_this_code()
 ```
 
-```{r, echo = FALSE, eval=FALSE}
-ggplot(data=rice, aes(x=Plant.height..cm.))+
-  geom_histogram(fill="#F28123", col="#D34E24", bins=30)+
-  labs(x="Rice Plant Height (cm)", y="Frequency")+
+```{r, echo = FALSE, eval=FALSE, warning=FALSE, message=FALSE}
+ggplot(clean_rice, aes(x = Plant.height..cm.)) +
+  geom_histogram(fill = "palegreen3", col = "darkgreen", bins = 30) +
+  labs(x = "Rice Plant Height (cm)", y = "Frequency") +
   theme_bw()
 ```
 
@@ -267,32 +384,44 @@ We can see that this is much better!
 
 ![](images/ggplothist.png)
 
-It is very important that when you create a plot, you provide meaningful labels with units. You can view below how different bins influence
+If you see an NA warning when creating this histogram in RStudio, don't worry. R automatically excludes these values from the plot. To avoid the warning, we can explicitly drop the NAs for the variable in the pipeline, as shown below:
 
 ```{r}
-ggplot(data=rice, aes(x=Plant.height..cm.))+
+clean_rice %>%
+  drop_na(Plant.height..cm.) %>%
+  ggplot(aes(x = Plant.height..cm.)) +
+  geom_histogram(fill = "palegreen3", col = "darkgreen", bins = 30) +
+  labs(x = "Rice Plant Height (cm)", y = "Frequency") +
+  theme_bw()
+```
+
+It is very important that when creating a plot, you provide meaningful labels with units. You can also see below how different bin choices influence the histogram.
+
+```{r, warning=FALSE, message=FALSE}
+ggplot(data=clean_rice, aes(x=Plant.height..cm.))+
   geom_histogram(fill="palegreen3", col="darkgreen", bins=10)+
   labs(x="Rice Plant Height (cm)", y="Frequency")+
   theme_bw()
 ```
 
-```{r}
-ggplot(data=rice, aes(x=Plant.height..cm.))+
+```{r, warning=FALSE, message=FALSE}
+ggplot(data=clean_rice, aes(x=Plant.height..cm.))+
   geom_histogram(fill="palegreen3", col="darkgreen", bins=100)+
   labs(x="Rice Plant Height (cm)", y="Frequency")+
   theme_bw()
 ```
-We can make the histogram even more informative by filling in the colour by sowing method. Do the plant heights differ between 
+
+We can make the histogram even more informative by filling the bars by sowing method. Do plant heights differ between different sowing methods?
 
 ```{r, message=FALSE, warning = FALSE}
-ggplot(data=rice, aes(x=Plant.height..cm., fill=Sowing.method))+
+ggplot(data=clean_rice, aes(x=Plant.height..cm., fill=Sowing.method))+
   geom_histogram(binwidth=2)+
   labs(x="Rice Plant Height (cm)", y="Frequency")+ 
   theme_bw()
 ```
 
 ```{r, message=FALSE, warning = FALSE}
-ggplot(data=rice, aes(x=Plant.height..cm., col=Sowing.method))+
+ggplot(data=clean_rice, aes(x=Plant.height..cm., col=Sowing.method))+
   geom_freqpoly(binwidth=2)+
   labs(x="Rice Plant Height (cm)", y="Frequency")+ 
   theme_bw()
@@ -300,9 +429,9 @@ ggplot(data=rice, aes(x=Plant.height..cm., col=Sowing.method))+
 
 ### Two Quantitative Variables
 
-To visualise two quantitative variables, a **scatterplot** is appropriate.
+When working with two quantitative variables, **scatterplot** is a suitable choice.
 
-Fill in the blanks below to create a scatterplot of HI versus Plant Growth.
+Fill in the blanks below to create a plot of dry matter at PI against plant height.
 
 ```{webr}
 #| exercise: ex_2.2.2
@@ -310,9 +439,10 @@ Fill in the blanks below to create a scatterplot of HI versus Plant Growth.
 #| warning: false
 #| message: false
 # Fill in the blanks
-ggplot(_____, aes(x=HI, y=_____))+
+ggplot(______, aes(x=_______, y=__________))+
   geom_point(fill="darkolivegreen3", col="darkolivegreen", pch=21, size=3)+
-  labs(x="HI",y="Rice Plant Height (cm)")+
+  labs(x=expression("Weight of Dry Matter at PI ("*g/m^2*")"),y="Rice Plant Height (cm)")+
+  geom_smooth(method="lm", col="black")+
   theme_bw()
 ```
 
@@ -320,9 +450,10 @@ ggplot(_____, aes(x=HI, y=_____))+
 #| exercise: ex_2.2.2
 #| solution: true
 #| envir: Ex1
-ggplot(data=rice, aes(x=HI, y=Plant.height..cm.))+
+ggplot(data=clean_rice, aes(x=PI.DM..g.msq., y=Plant.height..cm.))+
   geom_point(fill="darkolivegreen3", col="darkolivegreen", pch=21, size=3)+
-  labs(x="HI",y="Rice Plant Height (cm)")+
+  labs(x=expression("Weight of Dry Matter at PI ("*g/m^2*")"),y="Rice Plant Height (cm)")+
+  geom_smooth(method="lm", col="black")+
   theme_bw()
 ```
 
@@ -334,28 +465,57 @@ ggplot(data=rice, aes(x=HI, y=Plant.height..cm.))+
 gradethis::grade_this_code()
 ```
 
-```{r, echo=FALSE, eval=FALSE}
-ggplot(data=rice, aes(x=HI, y=Plant.height..cm.))+
+We can see that as the weight of the dry matter increases, the plant height also slightly increases. This suggests a *weak to moderate positive linear* relationship. Looking for more details on understanding linear relationships? Check out the *Inferential Statistics with R* and *Linear Regression* short courses!
+
+To visualise the linear relationship, we include `method = "lm"` in `geom_smooth()`, which fits a linear model (a straight line) to the data.
+
+```{r, warning=FALSE, message=FALSE}
+ggplot(data=clean_rice, aes(x=PI.DM..g.msq., y=Plant.height..cm.))+
   geom_point(fill="darkolivegreen3", col="darkolivegreen", pch=21, size=3)+
-  labs(x="HI",y="Rice Plant Height (cm)")+
+  labs(x=expression("Weight of Dry Matter at PI ("*g/m^2*")"),y="Rice Plant Height (cm)")+
   geom_smooth(method="lm", col="black")+
   theme_bw()
 ```
 
+We can customise the scatterplot even further by using the `mapping` argument to colour the points by species type.
+
+```{r, warning=FALSE, message=FALSE}
+clean_rice %>%
+  drop_na(Sowing.method) %>%
+  ggplot(aes(
+    x = PI.DM..g.msq.,
+    y = Plant.height..cm.,
+    colour = Sowing.method,
+    fill   = Sowing.method,
+  )) +
+  geom_point(size = 3) +
+  labs(
+    x = expression("Weight of Dry Matter at PI ("*g~m^-2*")"),
+    y = "Rice Plant Height (cm)"
+  ) +
+  theme_bw()
+
+```
 
 ![](images/ggplotscatter.png)
 
 ### Quantitative and Qualitative Variables
 
-You may also wish to create plots between quantitative and qualitative variables. Does plant height differ between variety of rice? How does header yield between sowing methods? In this case, a boxplot is helpful to visualise the relationship. 
+You may also want to create plots that compare quantitative and qualitative variables. For example, does plant height differ between rice varieties? How does header yield vary across sowing methods? In these cases, a **boxplot** is a useful way to visualise the relationship.
 
+Fill in the blanks below to create a boxplot showing plant height (*Plant.height..cm.*) across groups representing different nitrogen rates (*N.group*).
 
-Fill in in the blanks below for creating a boxplot of groups representing different nitogen rates `N.group` versus plant height `Plant.height..cm.`
 ```{webr}
 #| exercise: ex_2.2.3
 #| envir: Ex1
 #| warning: false
 #| message: false
+# First, let's relevel the variable so the order is logical
+clean_rice$N.group <- factor(
+  clean_rice$N.group,
+  levels = c("zero", "PW_1", "PW_2", "PW_3", "split", "split 2", "split 3")
+)
+
 # Fill in the blanks
 ggplot(_____, aes(x=_____, y=_____))+
   geom_boxplot(fill="#EF8354", col="#DF3B57")+
@@ -367,7 +527,12 @@ ggplot(_____, aes(x=_____, y=_____))+
 #| exercise: ex_2.2.3
 #| solution: true
 #| envir: Ex1
-ggplot(rice, aes(x=N.group, y=Plant.height..cm.))+
+clean_rice$N.group <- factor(
+  clean_rice$N.group,
+  levels = c("zero", "PW_1", "PW_2", "PW_3", "split", "split 2", "split 3")
+)
+
+ggplot(clean_rice, aes(x=N.group, y=Plant.height..cm.))+
   geom_boxplot(fill="#EF8354", col="#DF3B57")+
   labs(x="Nitrogen Rate Group",y="Rice Plant Height (cm)")+
   theme_bw()
@@ -381,61 +546,56 @@ ggplot(rice, aes(x=N.group, y=Plant.height..cm.))+
 gradethis::grade_this_code()
 ```
 
-```{r, echo=FALSE, eval=FALSE}
-ggplot(rice, aes(x=N.group, y=Plant.height..cm.))+
+```{r, echo=FALSE, eval=FALSE, warning=FALSE}
+clean_rice$N.group <- factor(
+  clean_rice$N.group,
+  levels = c("zero", "PW_1", "PW_2", "PW_3", "split", "split 2", "split 3")
+)
+ggplot(clean_rice, aes(x=N.group, y=Plant.height..cm.))+
   geom_boxplot(fill="#EF8354", col="#DF3B57")+
   labs(x="Nitrogen Rate Group",y="Rice Plant Height (cm)")+
   theme_bw() 
 ```
+
 You can also customise even further.
 
-```{r}
-ggplot(rice, aes(x=N.group, y=Plant.height..cm.))+
-  geom_boxplot(fill=c("#D8A47F",
-                      "#EF8354", 
-                      "#EE4B6A",
-                      "#0F7173",
-                      "#D8A47F",
-                      "#EF8354", 
-                      "#EE4B6A",
-                      "#0F7173"),
-               col=c("#C57A44",
-                     "#EA5C1F",
-                     "#EA1F44",
-                     "#094748",
-                     "#C57A44",
-                     "#EA5C1F",
-                     "#EA1F44",
-                     "#094748"))+
-  labs(x="Nitrogen Rate Group",y="Rice Plant Height (cm)",
-       title="Rice Plant Heights vs. Nitogen Rate by Sowing Method")+
-  theme_bw()+
-  facet_wrap(~Sowing.method)
-```
-Or a bit neater is to map to the `N.group`rather than repeatedly typing the colours:
-
-```{r, eval=FALSE}
-ggplot(rice, aes(x = N.group, y = Plant.height..cm., fill = N.group, colour = N.group)) +
-  geom_boxplot() +
-  scale_fill_manual(values = c("#D8A47F", "#EF8354", "#EE4B6A", "#0F7173")) +
-  scale_colour_manual(values = c("#C57A44", "#EA5C1F", "#EA1F44", "#094748")) +
-  labs(x = "Nitrogen Rate Group", y = "Rice Plant Height (cm)",
-       title="Rice Plant Heights vs. Nitogen Rate by Sowing Method") +
+```{r, warning=FALSE}
+ggplot(
+  clean_rice,
+  aes(x = N.group, y = Plant.height..cm., fill = N.group, colour = N.group)
+) +
+  geom_boxplot(col="black") +
+  facet_wrap(~ Sowing.method) +
+  scale_fill_manual(values =  c(
+  "#D8A47F",
+  "#EF8354",
+  "#EE4B6A",
+  "#C57A44",
+  "#EA5C1F",
+  "#EA1F44",
+  "#0F7173")) +
+  labs(
+    x = "Nitrogen rate group",
+    y = "Rice plant height (cm)",
+    title = "Rice Plant Heights vs. Nitrogen Rate by Sowing Method"
+  ) +
   theme_bw() +
-  facet_wrap(~Sowing.method)
+  theme(legend.position = "none")
+
 ```
 
-
-Try creating a boxplot of Header Yield (machine-harvested grain yield, tonnes per hectare at 14% moisture) versus sowing method on your own, and customise it to your liking. 
+Try creating a boxplot of Header Yield (machine-harvested grain yield, tonnes per hectare at 14% moisture) versus sowing method on your own, and customise it to your liking.
 
 `r hide("Show code")`
 
 ```{r}
-ggplot(rice, aes(x = Sowing.method, y = Header.Yield..t.ha..14.., fill = Sowing.method, 
+clean_rice %>%
+  drop_na(Header.Yield..t.ha..14..) %>%
+ggplot(aes(x = Sowing.method, y = Header.Yield..t.ha..14.., fill = Sowing.method, 
                  colour = Sowing.method)) +
   geom_boxplot() +
-  scale_fill_manual(values = c("#A05475", "#EE586C")) +
-  scale_colour_manual(values = c("#3B1F2B", "#D8162F")) +
+  scale_fill_manual(values = c("#A05475", "#EE586C", "#6B5C8A")) +
+  scale_colour_manual(values = c("#3B1F2B", "#D8162F", "#3F355F")) +
   labs(x = "Sowing Method", y = "Header Yield (Tonnes per Hectare*)",
        title="Sowing Method vs. Header Yield by Nitrogen Group",
        caption = "*At 14% Moisture") +
@@ -445,8 +605,59 @@ ggplot(rice, aes(x = Sowing.method, y = Header.Yield..t.ha..14.., fill = Sowing.
 
 `r unhide()`
 
+```{r}
+detach(clean_rice)
+```
 
 # Palmer Penguins
+
+```{r}
+library(palmerpenguins)
+
+sum(is.na(penguins))
+
+nrow(penguins)
+```
+
+```{webr}
+#| exercise: ex_2.3.1
+#| envir: Ex1
+#| warning: false
+#| message: false
+# 1. Load in `ggplot2`
+
+# 2. Load in the `palmerpenguins` package
+
+# 3. Use na.omit() on penguins and name this cleaned dataset `clean_penguins`
+
+# 4. Create a ggplot histogram of penguin body mass:
+#   a. Fill the histogram with "orangered" and set the bins to 30
+#   b. Title the x-axis "Body Mass of Penguins (g)"
+#   c. Set the theme black and white (bw).
+```
+
+```{webr}
+#| exercise: ex_2.3.1
+#| solution: true
+#| envir: Ex1
+library(ggplot2)
+library(tidyverse)
+
+clean_penguins <- na.omit(penguins)
+
+ggplot(clean_penguins, aes(x=body_mass_g))+
+  geom_histogram(fill="orangered", bins=30) +
+  labs(x="Body Mass of Penguins (g)")+
+  theme_bw()
+```
+
+```{webr}
+#| exercise: ex_2.3.1
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
 
 ```{r, message = FALSE, warning = FALSE}
 # Load the library
