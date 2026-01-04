@@ -73,7 +73,7 @@ library(tidyverse)
 naplan <- read.csv("Data-sets/naplan_reading.csv")
 ```
 
-Try doing this yourself. 
+Try doing this yourself.
 
 ```{webr}
 #| exercise: ex_1.1.0
@@ -301,7 +301,6 @@ naplan[5:6,]
 gradethis::grade_this_code()
 ```
 
-
 ```{r, echo=FALSE, eval=FALSE}
 # Select the fifth and sixth row of the Naplan dataset 
 naplan[5:6,]
@@ -309,9 +308,9 @@ naplan[5:6,]
 
 We can even select rows based on logical tests on the values of one or more variables.
 
-For instance, let's say we want all observations where reading time is greater than 45 mins. We can do this by typing `naplan[reading_time_home>45, ]`. 
+For instance, let's say we want all observations where reading time is greater than 45 mins. We can do this by typing `naplan[reading_time_home>45, ]`.
 
-Try having a go below by selecting rows with reading times greater than 30 mins AND where students havea  reading score greater than 800. Hint; you will need to use the logical operator `&`
+Try having a go below by selecting rows with reading times greater than 30 mins AND where students havea reading score greater than 800. Hint; you will need to use the logical operator `&`
 
 ```{webr}
 #| exercise: ex_1.1.6
@@ -339,15 +338,13 @@ naplan[reading_time_home > 30 & naplan_reading_score > 860,]
 gradethis::grade_this_code()
 ```
 
-
 ```{r, echo=FALSE, eval=FALSE}
 # Select all rows (observations) that have a reading time at 
 # home greater than 30 mins and a naplan reading score greater than 800
 naplan[reading_time_home > 30 & naplan_reading_score > 860,]
 ```
 
-
-The `dyplr` package can simplify this process. Some helpful functions include `select`, `mutate`, and `filter`. You can load in `tidyverse` which has `dplyr` built in, or load in `dyplr` directly. 
+The `dyplr` package can simplify this process. Some helpful functions include `select`, `mutate`, and `filter`. You can load in `tidyverse` which has `dplyr` built in, or load in `dyplr` directly.
 
 ```{r, eval=FALSE}
 library(tidyverse)
@@ -370,6 +367,7 @@ naplan <- naplan %>%
 ```{r}
 str(naplan)
 ```
+
 We can combine several of these pipelines together. For example, we can `select` `student_id` and `school_id`, rename `student_id` to `student` and `school_id` to `school`, then `mutate` them back to integers and store the result in a new dataset called `naplan_new`.
 
 ```{r}

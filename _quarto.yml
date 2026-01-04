@@ -11,7 +11,7 @@ book:
   chapters:
   - index.qmd
   - intro.qmd
-  - tablesforR.qmd
+  - chapter1.qmd
   - chapter2.qmd
   - references.qmd
   page-navigation: false

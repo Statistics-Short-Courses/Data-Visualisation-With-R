@@ -40,9 +40,81 @@ custom-numbered-blocks:
       collapse: true
 ---
 
-{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+```{r echo=FALSE}
+# Setup knitr for handling {webr} and {pyodide} blocks
+# TODO: With quarto-dev/quarto-cli#10169, we can implement this in a filter
 
-{{< include ./_extensions/r-wasm/live/_gradethis.qmd >}}
+# We'll handle `include: false` in Lua, always include cell in knitr output
+knitr::opts_hooks$set(include = function(options) {
+  if (options$engine == "webr" || options$engine == "pyodide") {
+    options$include <- TRUE
+  }
+  options
+})
+
+# Passthrough engine for webr
+knitr::knit_engines$set(webr = function(options) {
+  knitr:::one_string(c(
+    "```{webr}",
+    options$yaml.code,
+    options$code,
+    "```"
+  ))
+})
+
+# Passthrough engine for pyodide
+knitr::knit_engines$set(pyodide = function(options) {
+  knitr:::one_string(c(
+    "```{pyodide}",
+    options$yaml.code,
+    options$code,
+    "```"
+  ))
+})
+```
+
+
+```{webr}
+#| edit: false
+#| output: false
+webr::install("gradethis", quiet = TRUE)
+library(gradethis)
+options(webr.exercise.checker = function(
+  label, user_code, solution_code, check_code, envir_result, evaluate_result,
+  envir_prep, last_value, engine, stage, ...
+) {
+  if (is.null(check_code)) {
+    # No grading code, so just skip grading
+    invisible(NULL)
+  } else if (is.null(label)) {
+    list(
+      correct = FALSE,
+      type = "warning",
+      message = "All exercises must have a label."
+    )
+  } else if (is.null(solution_code)) {
+    list(
+      correct = FALSE,
+      type = "warning",
+      message = htmltools::tags$div(
+        htmltools::tags$p("A problem occurred grading this exercise."),
+        htmltools::tags$p(
+          "No solution code was found. Note that grading exercises using the ",
+          htmltools::tags$code("gradethis"),
+          "package requires a model solution to be included in the document."
+        )
+      )
+    )
+  } else {
+    gradethis::gradethis_exercise_checker(
+      label = label, solution_code = solution_code, user_code = user_code,
+      check_code = check_code, envir_result = envir_result,
+      evaluate_result = evaluate_result, envir_prep = envir_prep,
+      last_value = last_value, stage = stage, engine = engine)
+  }
+})
+```
+
 
 Now that we've covered the main types of variables, we can start thinking about how to prepare and visually represent data with figures and tables. In this section, we will focus on preparing data for tables.
 
@@ -874,3 +946,4 @@ naplan %>%
     extra_css = "border-left: 3px solid gray50; border-right: 3px solid gray50;"
   )  %>%  footnote(general = "SES Index represents ...", general_title = "")
 ```
+
