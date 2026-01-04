@@ -985,7 +985,7 @@ ggplot(
 ### Boxplots
 
 ```{webr}
-#| exercise: ex_2.3.5
+#| exercise: 6
 #| envir: Ex1
 #| warning: false
 #| message: false
@@ -1001,7 +1001,7 @@ ggplot(
 ```
 
 ```{webr}
-#| exercise: ex_2.3.5
+#| exercise: ex_2.3.6
 #| solution: true
 #| envir: Ex1
 ggplot(clean_penguins, aes(x=species, y=body_mass_g))+
@@ -1011,7 +1011,7 @@ ggplot(clean_penguins, aes(x=species, y=body_mass_g))+
 ```
 
 ```{webr}
-#| exercise: ex_2.3.5
+#| exercise: ex_2.3.6
 #| check: true
 #| class: wait
 #| envir: Ex1
