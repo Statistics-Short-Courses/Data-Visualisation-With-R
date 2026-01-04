@@ -733,7 +733,7 @@ There is minimal missing data overall (approximately 0.7%). Although the variabl
 
 # 2. Create a ggplot histogram of penguin body mass:
 #   a. Fill the histogram with "orangered" and set the bins to 30
-#   b. Title the x-axis "Body Mass of Penguins (g)"
+#   b. Title the x-axis "Body Mass  (g)"
 #   c. Set the theme to black and white (bw).
 
 ```
@@ -746,7 +746,7 @@ clean_penguins <- na.omit(penguins)
 
 ggplot(clean_penguins, aes(x=body_mass_g))+
   geom_histogram(fill="orangered", bins=30) +
-  labs(x="Body Mass of Penguins (g)")+
+  labs(x="Body Mass (g)")+
   theme_bw()
 ```
 
@@ -765,7 +765,7 @@ clean_penguins <- na.omit(penguins)
 ```{r, echo=FALSE, eval=FALSE}
 ggplot(clean_penguins, aes(x=body_mass_g))+
   geom_histogram(fill="orangered", bins=30) +
-  labs(x="Body Mass of Penguins (g)")+
+  labs(x="Body Mass (g)")+
   theme_bw()
 ```
 
@@ -777,14 +777,14 @@ ggplot(clean_penguins, aes(x=body_mass_g))+
 #| message: false
 # 1. Create a frequency polygon of body mass.
 #    Map body mass to the x-axis and colour the lines by species.
-#    Use a bin width of 100, label the x-axis "Body Mass of Penguins (g)" and the 
+#    Use a bin width of 100, label the x-axis "Body Mass (g)" and the 
 #    y-axis as "Frequency" and apply a black-and-white theme.
 
 # 2. Create a frequency polygon of body mass scaled to density.
 #    Map body mass to the x-axis, density to the y-axis using after_stat(density),
 #    and colour the lines by species. 
 #    Use a bin width of 100, 
-#    Label the x-axis "Body Mass of Penguins (g)" and the y-axis as "Frequency".
+#    Label the x-axis "Body Mass (g)" and the y-axis as "Frequency".
 
 ```
 
@@ -797,7 +797,7 @@ ggplot(clean_penguins, aes(x=body_mass_g))+
 ggplot(data=clean_penguins, 
        aes(x=body_mass_g, col=species))+ 
   geom_freqpoly(binwidth=100)+
-  labs(x="Body Mass of Penguins (g)", y="Frequency")+ 
+  labs(x="Body Mass (g)", y="Frequency")+ 
   theme_bw()
 
 #2. 
@@ -806,7 +806,7 @@ ggplot(data=clean_penguins,
            after_stat(density), 
            col = species)) + 
   geom_freqpoly(binwidth = 100)+
-  labs(x="Body Mass of Penguins (g)", y="Frequency")+ 
+  labs(x="Body Mass (g)", y="Frequency")+ 
   theme_bw()
 
 ```
@@ -825,7 +825,7 @@ gradethis::grade_this_code()
 ggplot(data=clean_penguins, 
        aes(x=body_mass_g, col=species))+ 
   geom_freqpoly(binwidth=100)+
-  labs(x="Body Mass of Penguins (g)", y="Frequency")+ 
+  labs(x="Body Mass (g)", y="Frequency")+ 
   theme_bw()
 
 #2. 
@@ -834,7 +834,7 @@ ggplot(data=clean_penguins,
            after_stat(density), 
            col = species)) + 
   geom_freqpoly(binwidth = 100)+
-  labs(x="Body Mass of Penguins (g)", y="Frequency")+ 
+  labs(x="Body Mass (g)", y="Frequency")+ 
   theme_bw()
 ```
 
@@ -852,8 +852,8 @@ What if we're interested in how body mass relates to flipper length? In this cas
 # 1. Create a scatterplot with flipper length on the x-axis and body mass on the y-axis.
 #    Use filled points with shape 21, size 2.5, a fill colour of "aquamarine",
 #    and an outline colour of "aquamarine4".
-#    Label the axes as "Body Mass of Penguins (g)" and
-#    "Flipper Length of Penguins (mm)", and apply a black-and-white theme.
+#    Label the axes as "Body Mass (g)" and
+#    "Flipper Length (mm)", and apply a black-and-white theme.
 ```
 
 ```{webr}
@@ -863,7 +863,7 @@ What if we're interested in how body mass relates to flipper length? In this cas
 
 ggplot(clean_penguins, aes(x=flipper_length_mm, y=body_mass_g))+
   geom_point(fill="aquamarine", col="aquamarine4", pch=21, size=2.5)+
-  labs(x="Flipper Length of Penguins (mm)", y="Body Mass of Penguins (g)")+
+  labs(x="Flipper Length (mm)", y="Body Mass (g)")+
   theme_bw()
 
 ```
@@ -884,8 +884,8 @@ gradethis::grade_this_code()
 # 2. Create a scatterplot with flipper length on the x-axis and body mass on the y-axis.
 #    Colour the points by species.
 #    Add a linear regression line to the plot.
-#    Label the axes as "Body Mass of Penguins (g)" and
-#    "Flipper Length of Penguins (mm)", and apply a black-and-white theme.
+#    Label the axes as "Body Mass (g)" and
+#    "Flipper Length (mm)", and apply a black-and-white theme.
 ```
 
 ```{webr}
@@ -896,7 +896,7 @@ ggplot(clean_penguins,
   mapping = aes(x=flipper_length_mm, y=body_mass_g)) +
   geom_point(mapping = aes(color = species)) +
   geom_smooth(method = "lm") +
-  labs(x="Flipper Length of Penguins (mm)", y="Body Mass of Penguins (g)")+
+  labs(x="Flipper Length (mm)", y="Body Mass (g)")+
   theme_bw()
 ```
 
@@ -919,8 +919,8 @@ gradethis::grade_this_code()
 #      Adelie = "#03045e"
 #      Chinstrap = "#0096c7"
 #      Gentoo = "#90e0ef"
-#    Label the axes as "Body Mass of Penguins (g)" and
-#    "Flipper Length of Penguins (mm)", and apply a black-and-white theme.
+#    Label the axes as "Body Mass (g)" and
+#    "Flipper Length (mm)", and apply a black-and-white theme.
 
 ```
 
@@ -939,7 +939,7 @@ ggplot(
       Adelie = "#03045e",
       Chinstrap = "#0096c7",
       Gentoo = "#90e0ef"))+
-  labs(x="Flipper Length of Penguins (mm)", y="Body Mass of Penguins (g)")+
+  labs(x="Flipper Length (mm)", y="Body Mass (g)")+
   theme_bw()
 ```
 
@@ -956,14 +956,14 @@ gradethis::grade_this_code()
 
 ggplot(clean_penguins, aes(x=flipper_length_mm, y=body_mass_g))+
   geom_point(fill="aquamarine", col="aquamarine4", pch=21, size=2.5)+
-  labs(x="Flipper Length of Penguins (mm)", y="Body Mass of Penguins (g)")+
+  labs(x="Flipper Length (mm)", y="Body Mass (g)")+
   theme_bw()
 
 ggplot(clean_penguins,
   mapping = aes(x=flipper_length_mm, y=body_mass_g)) +
   geom_point(mapping = aes(color = species)) +
   geom_smooth(method = "lm") +
-  labs(x="Flipper Length of Penguins (mm)", y="Body Mass of Penguins (g)")+
+  labs(x="Flipper Length (mm)", y="Body Mass (g)")+
   theme_bw()
   
 ggplot(
@@ -977,14 +977,49 @@ ggplot(
       Adelie = "#03045e",
       Chinstrap = "#0096c7",
       Gentoo = "#90e0ef"))+
-  labs(x="Flipper Length of Penguins (mm)", y="Body Mass of Penguins (g)")+
+  labs(x="Flipper Length (mm)", y="Body Mass (g)")+
   theme_bw()
 ```
 
 
+### Boxplots
+
+```{webr}
+#| exercise: ex_2.3.5
+#| envir: Ex1
+#| warning: false
+#| message: false
+# Create a boxplot to compare body mass across penguin species.
+#   Map species to the x-axis and body mass (in grams) to the y-axis.
+#   Fill the boxes using the following colours, in order:
+#     coral2, chartreuse2, cadetblue2
+#   Set the outline colours to:
+#     coral3, chartreuse4, cadetblue4
+# Label the axes as "Species of Penguin" and "Body Mass (g)".
+
+
+```
+
+```{webr}
+#| exercise: ex_2.3.5
+#| solution: true
+#| envir: Ex1
+ggplot(clean_penguins, aes(x=species, y=body_mass_g))+
+  geom_boxplot(fill = c("coral2", "chartreuse2", "cadetblue2"),
+               col = c("coral3", "chartreuse4", "cadetblue4")) +
+  labs(x="Species of Penguin", y="Body Mass (g)")
+```
+
+```{webr}
+#| exercise: ex_2.3.5
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
 Fantastic work! 
 
-*need to add boxplot
 
 # Additional Notes 
 
