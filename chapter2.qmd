@@ -315,7 +315,7 @@ clean_rice <- clean_rice %>%
 gradethis::grade_this_code()
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, message=FALSE}
 library(tidyverse)
 library(stringr)
 
@@ -391,7 +391,7 @@ attach(clean_rice)
 # run the code below
 ggplot(data=clean_rice, aes(x=Plant.height..cm.))+
   geom_histogram(fill="palegreen3", col="darkgreen", bins=30)+
-  labs(x="Rice Plant Height (cm)", y="Frequency"))+
+  labs(x="Rice Plant Height (cm)", y="Frequency")+
   theme_bw()
 ```
 
@@ -469,6 +469,15 @@ ggplot(data=clean_rice, aes(x=Plant.height..cm., col=Sowing.method))+
   theme_bw()
 ```
 
+```{r, message=FALSE, warning = FALSE}
+ggplot(data=clean_rice, aes(x=Plant.height..cm., after_stat(density), col=Sowing.method))+
+  geom_freqpoly(binwidth=2)+
+  labs(x="Rice Plant Height (cm)", y="Frequency")+ 
+  theme_bw()
+```
+
+  
+  
 ### Two Quantitative Variables
 
 When working with two quantitative variables, **scatterplot** is a suitable choice.
@@ -519,7 +528,7 @@ ggplot(data=clean_rice, aes(x=PI.DM..g.msq., y=Plant.height..cm.))+
   theme_bw()
 ```
 
-We can customise the scatterplot even further by using the `mapping` argument to colour the points by species type.
+We can customise the scatterplot even further by using the `mapping` argument to colour the points by sowing method.
 
 ```{r, warning=FALSE, message=FALSE}
 clean_rice %>%
@@ -653,13 +662,7 @@ detach(clean_rice)
 
 # Palmer Penguins
 
-```{r}
-library(palmerpenguins)
-
-sum(is.na(penguins))
-
-nrow(penguins)
-```
+Now that we’ve learned a bit about plotting, let’s test your new skills using the `penguins` dataset we worked with in the previous chapter. Try completing the exercises below.
 
 ```{webr}
 #| exercise: ex_2.3.1
@@ -670,12 +673,8 @@ nrow(penguins)
 
 # 2. Load in the `palmerpenguins` package
 
-# 3. Use na.omit() on penguins and name this cleaned dataset `clean_penguins`
-
-# 4. Create a ggplot histogram of penguin body mass:
-#   a. Fill the histogram with "orangered" and set the bins to 30
-#   b. Title the x-axis "Body Mass of Penguins (g)"
-#   c. Set the theme black and white (bw).
+# 3. Load in the  `visdat` package and visualise the missing 
+# values for the `penguins` dataset with vis_miss()
 ```
 
 ```{webr}
@@ -683,14 +682,14 @@ nrow(penguins)
 #| solution: true
 #| envir: Ex1
 library(ggplot2)
-library(tidyverse)
 
-clean_penguins <- na.omit(penguins)
+library(palmerpenguins)
 
-ggplot(clean_penguins, aes(x=body_mass_g))+
-  geom_histogram(fill="orangered", bins=30) +
-  labs(x="Body Mass of Penguins (g)")+
-  theme_bw()
+library(visdat)
+
+vis_miss(penguins)
+
+
 ```
 
 ```{webr}
@@ -701,76 +700,237 @@ ggplot(clean_penguins, aes(x=body_mass_g))+
 gradethis::grade_this_code()
 ```
 
-```{r, message = FALSE, warning = FALSE}
-# Load the library
 
+```{r, echo=FALSE, message=FALSE}
 library(ggplot2)
-library(palmerpenguins)
-clean_penguins <- na.omit(penguins)
 
-# We can plot the histogram
-ggplot(clean_penguins, aes(x=body_mass_g))+
-  geom_histogram()
-         
+library(palmerpenguins)
+
+library(visdat)
 ```
 
-```{r}
-# We can plot the histogram
+```{r, eval=FALSE, echo=FALSE}
+vis_miss(penguins)
+```
+
+What do you notice about the missing data, and how might it be handled appropriately?
+
+`r hide("Show hint")`
+
+There is minimal missing data overall (approximately 0.7%). Although the variable sex has the highest proportion of missing values, the amount is small and does not show an obvious pattern with other variables in the dataset. As a result, removing these observations is unlikely to have a meaningful impact on the overall dataset.
+
+`r unhide()`
+
+
+
+```{webr}
+#| exercise: ex_2.3.2
+#| envir: Ex1
+#| warning: false
+#| message: false
+# 1. Use na.omit() on penguins and name this cleaned dataset `clean_penguins`
+
+
+# 2. Create a ggplot histogram of penguin body mass:
+#   a. Fill the histogram with "orangered" and set the bins to 30
+#   b. Title the x-axis "Body Mass of Penguins (g)"
+#   c. Set the theme to black and white (bw).
+
+```
+
+```{webr}
+#| exercise: ex_2.3.2
+#| solution: true
+#| envir: Ex1
+clean_penguins <- na.omit(penguins)
+
 ggplot(clean_penguins, aes(x=body_mass_g))+
   geom_histogram(fill="orangered", bins=30) +
   labs(x="Body Mass of Penguins (g)")+
   theme_bw()
 ```
 
-```{r, message=FALSE, warning = FALSE}
-ggplot(penguins, aes(body_mass_g, fill = species)) +
-  geom_histogram(binwidth = 100)
+```{webr}
+#| exercise: ex_2.3.2
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
 ```
 
-```{r, message=FALSE, warning = FALSE}
-ggplot(penguins, aes(body_mass_g, colour = species)) +
-  geom_freqpoly(binwidth = 100)
+```{r,echo=FALSE}
+clean_penguins <- na.omit(penguins)
 ```
 
-```{r}
-ggplot(penguins, aes(body_mass_g, after_stat(density), colour = species)) +
-  geom_freqpoly(binwidth = 100)
+```{r, echo=FALSE, eval=FALSE}
+ggplot(clean_penguins, aes(x=body_mass_g))+
+  geom_histogram(fill="orangered", bins=30) +
+  labs(x="Body Mass of Penguins (g)")+
+  theme_bw()
 ```
+
+
+```{webr}
+#| exercise: ex_2.3.3_1
+#| envir: Ex1
+#| warning: false
+#| message: false
+# 1. Create a frequency polygon of body mass.
+#    Map body mass to the x-axis and colour the lines by species.
+#    Use a bin width of 100, label the x-axis "Body Mass of Penguins (g)" and the 
+#    y-axis as "Frequency" and apply a black-and-white theme.
+
+# 2. Create a frequency polygon of body mass scaled to density.
+#    Map body mass to the x-axis, density to the y-axis using after_stat(density),
+#    and colour the lines by species. 
+#    Use a bin width of 100, 
+#    Label the x-axis "Body Mass of Penguins (g)" and the y-axis as "Frequency".
+
+```
+
+```{webr}
+#| exercise: ex_2.3.3_1
+#| solution: true
+#| envir: Ex1
+
+#1. 
+ggplot(data=clean_penguins, 
+       aes(x=body_mass_g, col=species))+ 
+  geom_freqpoly(binwidth=100)+
+  labs(x="Body Mass of Penguins (g)", y="Frequency")+ 
+  theme_bw()
+
+#2. 
+ggplot(data=clean_penguins, 
+       aes(x=body_mass_g, 
+           after_stat(density), 
+           col = species)) + 
+  geom_freqpoly(binwidth = 100)+
+  labs(x="Body Mass of Penguins (g)", y="Frequency")+ 
+  theme_bw()
+
+```
+
+```{webr}
+#| exercise: ex_2.3.3_1
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+
+```{r,echo=FALSE, eval=FALSE}
+#1. 
+ggplot(data=clean_penguins, 
+       aes(x=body_mass_g, col=species))+ 
+  geom_freqpoly(binwidth=100)+
+  labs(x="Body Mass of Penguins (g)", y="Frequency")+ 
+  theme_bw()
+
+#2. 
+ggplot(data=clean_penguins, 
+       aes(x=body_mass_g, 
+           after_stat(density), 
+           col = species)) + 
+  geom_freqpoly(binwidth = 100)+
+  labs(x="Body Mass of Penguins (g)", y="Frequency")+ 
+  theme_bw()
+```
+
 
 ### Scatterplots
 
 What if we're interested in how body mass relates to flipper length? In this case, we're working with two continuous numerical variables, so a **scatterplot** would be a good choice.
 
-```{r}
-ggplot(clean_penguins, aes(x=body_mass_g, y=flipper_length_mm))+
-  geom_point()
+
+```{webr}
+#| exercise: ex_2.3.3
+#| envir: Ex1
+#| warning: false
+#| message: false
+# 1. Create a scatterplot with flipper length on the x-axis and body mass on the y-axis.
+#    Use filled points with shape 21, size 2.5, a fill colour of "aquamarine",
+#    and an outline colour of "aquamarine4".
+#    Label the axes as "Body Mass of Penguins (g)" and
+#    "Flipper Length of Penguins (mm)", and apply a black-and-white theme.
 ```
 
-Like we did with the histogram, we can add color, change the shape of the points, and include informative labels.
+```{webr}
+#| exercise: ex_2.3.3
+#| solution: true
+#| envir: Ex1
 
-```{r}
-ggplot(clean_penguins, aes(x=body_mass_g, y=flipper_length_mm))+
+ggplot(clean_penguins, aes(x=flipper_length_mm, y=body_mass_g))+
   geom_point(fill="aquamarine", col="aquamarine4", pch=21, size=2.5)+
-  labs(x="Body Mass of Penguins (g)", y="Flipper Length of Penguins (mm)")+
+  labs(x="Flipper Length of Penguins (mm)", y="Body Mass of Penguins (g)")+
+  theme_bw()
+
+```
+
+```{webr}
+#| exercise: ex_2.3.3
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+```{webr}
+#| exercise: ex_2.3.4
+#| envir: Ex1
+#| warning: false
+#| message: false
+# 2. Create a scatterplot with flipper length on the x-axis and body mass on the y-axis.
+#    Colour the points by species.
+#    Add a linear regression line to the plot.
+#    Label the axes as "Body Mass of Penguins (g)" and
+#    "Flipper Length of Penguins (mm)", and apply a black-and-white theme.
+```
+
+```{webr}
+#| exercise: ex_2.3.4
+#| solution: true
+#| envir: Ex1
+ggplot(clean_penguins,
+  mapping = aes(x=flipper_length_mm, y=body_mass_g)) +
+  geom_point(mapping = aes(color = species)) +
+  geom_smooth(method = "lm") +
+  labs(x="Flipper Length of Penguins (mm)", y="Body Mass of Penguins (g)")+
   theme_bw()
 ```
 
-We can see that as the body mass of a penguin increases, its flipper length also tends to increase. This suggests a *strong positive linear* relationship.
-
-We can customise the scatterplot even further by using the `mapping` argument to colour the points by species type. To visualise the linear relationship, we include `method = "lm"` in `geom_smooth()`, which fits a linear model (a straight line) to the data.
-
-```{r}
-ggplot(
-  penguins,
-  mapping = aes(x = flipper_length_mm, y = body_mass_g)) +
-  geom_point(mapping = aes(color = species)) +
-  geom_smooth(method = "lm")
+```{webr}
+#| exercise: ex_2.3.4
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
 ```
 
-```{r, warning = FALSE, message = FALSE}
+```{webr}
+#| exercise: ex_2.3.5
+#| envir: Ex1
+#| warning: false
+#| message: false
+# 3. Modify the previous plot so that both colour and shape are mapped to species.
+#    Add a linear regression line.
+#    Manually set the colours with scale_colour_manual() for each species as follows:
+#      Adelie = "#03045e"
+#      Chinstrap = "#0096c7"
+#      Gentoo = "#90e0ef"
+#    Label the axes as "Body Mass of Penguins (g)" and
+#    "Flipper Length of Penguins (mm)", and apply a black-and-white theme.
+
+```
+
+```{webr}
+#| exercise: ex_2.3.5
+#| solution: true
+#| envir: Ex1
 ggplot(
-  data = penguins,
-  mapping = aes(x = flipper_length_mm, y = body_mass_g)
+  data = clean_penguins,
+  mapping = aes(x=flipper_length_mm, y=body_mass_g)
 ) +
   geom_point(mapping = aes(color = species, shape = species)) +
   geom_smooth(method = "lm") +
@@ -778,10 +938,55 @@ ggplot(
     values = c(
       Adelie = "#03045e",
       Chinstrap = "#0096c7",
-      Gentoo = "#90e0ef"
-    )
-  )
+      Gentoo = "#90e0ef"))+
+  labs(x="Flipper Length of Penguins (mm)", y="Body Mass of Penguins (g)")+
+  theme_bw()
 ```
+
+```{webr}
+#| exercise: ex_2.3.5
+#| check: true
+#| class: wait
+#| envir: Ex1
+gradethis::grade_this_code()
+```
+
+
+```{r, echo=FALSE, eval=FALSE, message=FALSE}
+
+ggplot(clean_penguins, aes(x=flipper_length_mm, y=body_mass_g))+
+  geom_point(fill="aquamarine", col="aquamarine4", pch=21, size=2.5)+
+  labs(x="Flipper Length of Penguins (mm)", y="Body Mass of Penguins (g)")+
+  theme_bw()
+
+ggplot(clean_penguins,
+  mapping = aes(x=flipper_length_mm, y=body_mass_g)) +
+  geom_point(mapping = aes(color = species)) +
+  geom_smooth(method = "lm") +
+  labs(x="Flipper Length of Penguins (mm)", y="Body Mass of Penguins (g)")+
+  theme_bw()
+  
+ggplot(
+  data = clean_penguins,
+  mapping = aes(x=flipper_length_mm, y=body_mass_g)
+) +
+  geom_point(mapping = aes(color = species, shape = species)) +
+  geom_smooth(method = "lm") +
+  scale_color_manual(
+    values = c(
+      Adelie = "#03045e",
+      Chinstrap = "#0096c7",
+      Gentoo = "#90e0ef"))+
+  labs(x="Flipper Length of Penguins (mm)", y="Body Mass of Penguins (g)")+
+  theme_bw()
+```
+
+
+Fantastic work! 
+
+*need to add boxplot
+
+# Additional Notes 
 
 ```{r, warning = FALSE, message = FALSE}
 ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
