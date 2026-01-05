@@ -990,7 +990,7 @@ ggplot(
 #| warning: false
 #| message: false
 # Create a boxplot to compare body mass across penguin species.
-#   Map species to the x-axis and body mass (in grams) to the y-axis.
+#   Map species to the x-axis and body mass to the y-axis.
 #   Fill the boxes using the following colours, in order:
 #     coral2, chartreuse2, cadetblue2
 #   Set the outline colours to:

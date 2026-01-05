@@ -88,5 +88,35 @@
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>How To Visualise Numerical Data</span>"
     ]
+  },
+  {
+    "objectID": "chapter4.html",
+    "href": "chapter4.html",
+    "title": "4  Advanced Plotting: Geographical, Longitudinal, and Time Series",
+    "section": "",
+    "text": "While we have covered the most integral and widely used plots, there are still many more to explore depending on the type of data you have.\nIn this chapter, we will briefly go through examples of some advanced plotting and visualisation you can do in R.\n\n5 Geographical Data\nThere are many nice packages out there to represent geographical data. One of the most popular packages is leaflet, which is an open-source JavaScript library for interactive maps.\n\nlibrary(leaflet)\nlibrary(tidyverse)\nm = leaflet() %&gt;% addTiles()\nm  \n\n\n\n\nm = m %&gt;% setView(151.64261320531202, -30.48717288612027, zoom = 17)\n\nm %&gt;% addPopups(\n  151.64261320531202,\n  -30.48717288612027,\n  'Here is the &lt;b&gt;Mathematics, Statistics and Computer Science Building&lt;/b&gt;, UNE'\n)\n\n\n\n\n\nYou can customise the map even further:\n\n\ncircles &lt;- data.frame(\n  lng = c(151.643),\n  lat = c(-30.487)\n)\n\nleaflet() %&gt;%\n  addTiles() %&gt;%\n  setView(lng = 151.643, lat = -30.487, zoom = 14) %&gt;%\n  addCircleMarkers(data = circles, color = \"red\") %&gt;%\n  addCircles(data = circles, radius = 1500)\n\n\n\n\n\nYou can read more about other customisations here. https://r-charts.com/spatial/interactive-maps-leaflet/\nWant to learn more about creating maps in R? check out these resources:\n\n\n6 Longitudinal\n\n\n7 Times Series",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Advanced Plotting: Geographical, Longitudinal, and Time Series</span>"
+    ]
+  },
+  {
+    "objectID": "chapter3.html",
+    "href": "chapter3.html",
+    "title": "3  How To Visualise Numerical and Categorical Data",
+    "section": "",
+    "text": "3.1 Exercise Checkpoint 2\nNow, let’s look at a case where we have one categorical variable and one numerical variable. A boxplot is a great choice here. Let’s see how body mass differs between penguin species.\nWe can see that Gentoo penguins have a noticeably higher median body mass compared to Chinstrap and Adelie penguins. The interquartile range (the box) for the Gentoo species does not overlap with the others, suggesting there may be a significant difference between them.\nSince we’re now considering species, let’s also take a look at how many penguins were observed in each species. Because we’re dealing with a categorical variable, a bar plot is appropriate.\nWe can also explore proportions to understand how each species contributes to the total sample.\nAdelie penguins make up a much larger proportion of the sample, while Chinstrap penguins account for the smallest. It’s important to consider how such imbalances in your dataset could influence your interpretation.\nWe can also generate a mosaic plot for species. To do so, we will need to install ggmosaic.\nThe wider the tile, the greater the proportion that species contributes. Adelie has the widest tile, which confirms it makes up the largest share of the sample.\nWhat if we want to look at penguin species by the island where they were observed? We are now dealing with two categorical variables. Mosaic plots work well here too.\nFrom this plot you can see:\nThese patterns help explain why Adelie dominate overall, and they also show that species presence varies by island.\nBe sure to detach() your dataset before you move onto the exercises.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>How To Visualise Numerical and Categorical Data</span>"
+    ]
+  },
+  {
+    "objectID": "chapter3.html#exercise-checkpoint-2",
+    "href": "chapter3.html#exercise-checkpoint-2",
+    "title": "3  How To Visualise Numerical and Categorical Data",
+    "section": "",
+    "text": "Now that you are more comfortable generating plots and summary statistics in R, it is a good time to test your skills on a new dataset, the built-in iris dataset. This dataset is already preloaded in RStudio, so there is no need to import anything.\nTo make sure it is available, you can view it by running\n\nView(iris)\n\nThis will open the dataset in a new tab in RStudio so you can explore its structure and variables before starting your analysis.\na. How many variables are in the iris dataset? \nb. How many observations are in the iris dataset? \nc. How many categorical variables are in the iris dataset? \nd. How many numerical variables are in the iris dataset? \ne. How many species are in the iris dataset? \nf. What are the names of the three species in the iris dataset? Please list them in alphabetical order, separated by commas (for example: x, y, z) \ng. Is Species nominal or ordinal? \nh. Is Sepal.Length continuous or discrete? \ni. What is the mean sepal width of iris varieties rounded to one decimal place? \nj. What is an appropriate plot to visualise petal width against species? \nk. What is an appropriate plot to visualise petal width against sepal width?",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>How To Visualise Numerical and Categorical Data</span>"
+    ]
   }
 ]

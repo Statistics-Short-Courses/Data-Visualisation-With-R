@@ -1,15 +1,5 @@
---- 
+---
 title: "Getting to Know Your Data" 
----
-
-
-## Variables
-
-Before we jump into the world of statistical testing, let's take a moment to refresh our understanding of what a variable is, the different types of variables, and how we can describe them using numerical and graphical methods.
-
-**So what is a variable?**
----
-title: "Getting to Know Your Data"
 ---
 
 ## Variables
@@ -46,11 +36,11 @@ Another example might be asking people whether they like ice cream, with options
 
 Take a moment to check your understanding with the exercises below.
 
-## Exercise Checkpoint 1
-
-```{r, echo = FALSE}
-library(webexercises)
+```{r, echo=FALSE}
+library(webexercises) 
 ```
+
+## Exercise Checkpoint 1
 
 1.  **Describe the following variables:**
 
@@ -263,25 +253,21 @@ Now we can attach the cleaned `penguins` dataset. Attaching the dataset allows u
 ```{r, message=F} # Attach cleaned dataset  #attach(clean_penguins)}
 ```
 
-```{r} # Let's first calculate the mean and round it to one decimal place #round(mean(body_mass_g),1)  # Now we can calculate the standard deviation #round(sd(body_mass_g),1)}
-```
+`{r} # Let's first calculate the mean and round it to one decimal place #round(mean(body_mass_g),1)  # Now we can calculate the standard deviation #round(sd(body_mass_g),1)}`
 
 The average body mass of penguins is **4207.1 g**, with a standard deviation of **805.2 g**.
 
-```{r} # calculate the minimum #min(body_mass_g)  # calculate the maximum #max(body_mass_g)}
-```
+`{r} # calculate the minimum #min(body_mass_g)  # calculate the maximum #max(body_mass_g)}`
 
 The minimum observed body mass is **2700 g**, and the maximum observed body mass is **6300 g**.
 
-```{r} # calculate median #median(body_mass_g)  # calculate IQR ## first quantile #quantile(body_mass_g, 0.25) ## third quantile  #quantile(body_mass_g, 0.75)}
-```
+`{r} # calculate median #median(body_mass_g)  # calculate IQR ## first quantile #quantile(body_mass_g, 0.25) ## third quantile  #quantile(body_mass_g, 0.75)}`
 
 The median body mass is **4050 g**, with an interquartile range from **3350 g to 4775 g.**
 
 The `summary()` function lets us quickly gather all of this information at once.
 
-```{r} # Calculate 5-point summary #summary(body_mass_g)}
-```
+`{r} # Calculate 5-point summary #summary(body_mass_g)}`
 
 Exercise checkpoint
 

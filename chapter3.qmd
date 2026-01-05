@@ -5,7 +5,15 @@ editor: visual
 
 Now, let's look at a case where we have one categorical variable and one numerical variable. A **boxplot** is a great choice here. Let's see how body mass differs between penguin species.
 
+```{r,echo=FALSE, message=FALSE}
+library(ggplot2)
+library(tidyverse)
+library(palmerpenguins)
+library(webexercises)
+```
+
 ```{r}
+clean_penguins <- na.omit(penguins)
 ggplot(clean_penguins, aes(x=species, y=body_mass_g))+
   geom_boxplot(fill = c("coral2", "chartreuse2", "cadetblue2"),
                col = c("coral3", "chartreuse4", "cadetblue4")) +
@@ -76,7 +84,7 @@ These patterns help explain why Adelie dominate overall, and they also show that
 Be sure to `detach()` your dataset before you move onto the exercises.
 
 ```{r}
-detach(clean_penguins)
+#detach(clean_penguins)
 ```
 
 ## Exercise Checkpoint 2

@@ -1,0 +1,93 @@
+---
+title: "Advanced Plotting: Geographical, Longitudinal, and Time Series"
+format: 
+  live-html:
+    toc: true
+resources: 
+  - "Data-sets"
+  
+execute:
+  echo: true
+  warning: false
+  message: false
+
+webr:
+  editor: true
+  render-df: gt-interactive
+    
+embed-resources: true
+
+filters:
+  - custom-numbered-blocks
+
+custom-numbered-blocks:
+  classes:
+    Assumption:
+      colors: [FFCDD2, F44336]
+      boxstyle: foldbox.simple
+      collapse: false
+    Example:
+      colors: [BBDEFB, 2196F3]
+      boxstyle: foldbox.simple
+      collapse: false
+    Exercise:
+      colors: [C8E6C9, 4CAF50]
+      boxstyle: foldbox.simple
+      collapse: false
+    Technical-point:
+      colors: [FFF9C4, FFEB3B]
+      boxstyle: foldbox.simple
+      collapse: true
+---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+{{< include ./_extensions/r-wasm/live/_gradethis.qmd >}}
+
+While we have covered the most integral and widely used plots, there are still many more to explore depending on the type of data you have.
+
+In this chapter, we will briefly go through examples of some advanced plotting and visualisation you can do in R.
+
+# Geographical Data
+
+There are many nice packages out there to represent geographical data. One of the most popular packages is [`leaflet`](https://rstudio.github.io/leaflet/), which is an open-source JavaScript library for interactive maps.
+
+```{r, message = FALSE}
+library(leaflet)
+library(tidyverse)
+m = leaflet() %>% addTiles()
+m  
+
+m = m %>% setView(151.64261320531202, -30.48717288612027, zoom = 17)
+
+m %>% addPopups(
+  151.64261320531202,
+  -30.48717288612027,
+  'Here is the <b>Mathematics, Statistics and Computer Science Building</b>, UNE'
+)
+
+```
+
+You can customise the map even further:\
+
+```{r}
+circles <- data.frame(
+  lng = c(151.643),
+  lat = c(-30.487)
+)
+
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = 151.643, lat = -30.487, zoom = 14) %>%
+  addCircleMarkers(data = circles, color = "red") %>%
+  addCircles(data = circles, radius = 1500)
+
+```
+
+You can read more about other customisations here. https://r-charts.com/spatial/interactive-maps-leaflet/
+
+Want to learn more about creating maps in R? check out these resources:
+
+# Longitudinal
+
+# Times Series
