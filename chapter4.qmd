@@ -88,6 +88,124 @@ You can read more about other customisations here. https://r-charts.com/spatial/
 
 Want to learn more about creating maps in R? check out these resources:
 
+```{r}
+names(midwest)
+```
+```{r, message=FALSE}
+library(dplyr)
+library(sf)
+library(tigris)
+library(ggplot2)
+
+options(tigris_use_cache = TRUE)
+
+mw <- midwest
+
+cty <- tigris::counties(cb = TRUE, year = 2022, class = "sf") %>%
+  mutate(
+    state = STUSPS,
+    county = tolower(NAME)
+  )
+mw_sf <- cty %>%
+  left_join(
+    mw %>% mutate(county = tolower(county)),
+    by = c("state", "county")
+  )
+
+mw_states <- sort(unique(mw$state))
+mw_sf <- mw_sf %>% filter(state %in% mw_states)
+
+pal <- hcl.colors(6, "Spectral", rev = TRUE, alpha = 0.75)
+
+mw_sf <- mw_sf %>%
+  filter(!is.na(percbelowpoverty)) %>%
+  mutate(
+    cls = cut(percbelowpoverty,
+              breaks = c(0, 5, 10, 15, 20, 25, Inf),
+              include.lowest = TRUE),
+    cls = factor(cls, labels = c("(0-5]", "(5-10]", "(10-15]", "(15-20]", "(20-25]", "(25+]"))
+  )
+
+ggplot(mw_sf) +
+  geom_sf(aes(fill = cls), color = "white", linewidth = 0.1) +
+  scale_fill_manual(values = pal, drop = FALSE, name = "% below poverty") +
+  theme_void() +
+  labs(title = "Midwest counties", subtitle = "Choropleth by poverty rate")
+
+
+
+```
+
+
 # Longitudinal
 
 # Times Series
+
+```{r}
+USAccDeaths
+```
+
+```{r, message=FALSE, warning=FALSE}
+library(dygraphs)
+library(xts)
+
+# built-in monthly ts object
+x <- USAccDeaths
+
+# convert ts -> xts with a monthly Date index
+dates <- seq.Date(from = as.Date("1973-01-01"),
+                  by   = "month",
+                  length.out = length(x))
+
+x_xts <- xts(as.numeric(x), order.by = dates)
+colnames(x_xts) <- "US Accident Deaths"
+
+# plot
+dygraph(x_xts) %>%
+  dyRangeSelector()
+
+```
+
+We can also have a static plot:
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+data <- data.frame(
+  date  = as.Date(airmiles),
+  value = as.numeric(airmiles))
+
+data %>%
+  ggplot(aes(x = date, y = value)) +
+  geom_area(fill = "#69b3a2", alpha = 0.5) +
+  geom_line(color = "#69b3a2") +
+  labs(x="year", y="Airline passenger miles (millions)")+
+  scale_x_date(expand=c(0.01,0))+
+  scale_y_continuous(breaks = seq(0, 30000, by = 5000))+
+  theme_minimal() 
+
+
+```
+```{r}
+# Load dataset (built-in)
+data <- data.frame(
+  date  = as.Date(economics$date),
+  value = economics$unemploy)
+
+data %>%
+  ggplot(aes(x = date, y = value)) +
+  geom_area(fill = "lightblue", alpha = 0.5) +
+  geom_line(color = "darkblue") +
+  labs(x="year", y="Number of US Unemployed (in thousands)")+
+  scale_y_continuous(breaks = seq(0, 20000, by = 2000))+
+  theme_minimal() 
+
+
+```
+
+
+
+
+
+
