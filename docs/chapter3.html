@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; How To Visualise Numerical and Categorical Data – UNE Course</title>
+<title>3&nbsp; Categorical Data – UNE Course</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -122,7 +122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter3.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">How To Visualise Numerical and Categorical Data</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter3.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Categorical Data</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -162,13 +162,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">How To Visualise Numerical Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Numerical Data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapter3.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">How To Visualise Numerical and Categorical Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Categorical Data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -196,7 +196,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">How To Visualise Numerical and Categorical Data</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Categorical Data</span></h1>
 </div>
 
 
@@ -213,124 +213,175 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Now, let’s look at a case where we have one categorical variable and one numerical variable. A <strong>boxplot</strong> is a great choice here. Let’s see how body mass differs between penguin species.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>clean_penguins <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(penguins)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean_penguins, <span class="fu">aes</span>(<span class="at">x=</span>species, <span class="at">y=</span>body_mass_g))<span class="sc">+</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="fu">c</span>(<span class="st">"coral2"</span>, <span class="st">"chartreuse2"</span>, <span class="st">"cadetblue2"</span>),</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"coral3"</span>, <span class="st">"chartreuse4"</span>, <span class="st">"cadetblue4"</span>)) <span class="sc">+</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species of Penguin"</span>, <span class="at">y=</span><span class="st">"Body Mass (g)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
+<div class="cell" data-edit="false">
 <div>
-<figure class="figure">
-<p><img src="chapter3_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<div id="webr-1" class="exercise-cell">
+
+</div>
+<script type="webr-1-contents">
+eyJhdHRyIjp7ImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQiOmZhbHNlfSwiY29kZSI6IndlYnI6Omluc3RhbGwoXCJncmFkZXRoaXNcIiwgcXVpZXQgPSBUUlVFKVxubGlicmFyeShncmFkZXRoaXMpXG5vcHRpb25zKHdlYnIuZXhlcmNpc2UuY2hlY2tlciA9IGZ1bmN0aW9uKFxuICBsYWJlbCwgdXNlcl9jb2RlLCBzb2x1dGlvbl9jb2RlLCBjaGVja19jb2RlLCBlbnZpcl9yZXN1bHQsIGV2YWx1YXRlX3Jlc3VsdCxcbiAgZW52aXJfcHJlcCwgbGFzdF92YWx1ZSwgZW5naW5lLCBzdGFnZSwgLi4uXG4pIHtcbiAgaWYgKGlzLm51bGwoY2hlY2tfY29kZSkpIHtcbiAgICAjIE5vIGdyYWRpbmcgY29kZSwgc28ganVzdCBza2lwIGdyYWRpbmdcbiAgICBpbnZpc2libGUoTlVMTClcbiAgfSBlbHNlIGlmIChpcy5udWxsKGxhYmVsKSkge1xuICAgIGxpc3QoXG4gICAgICBjb3JyZWN0ID0gRkFMU0UsXG4gICAgICB0eXBlID0gXCJ3YXJuaW5nXCIsXG4gICAgICBtZXNzYWdlID0gXCJBbGwgZXhlcmNpc2VzIG11c3QgaGF2ZSBhIGxhYmVsLlwiXG4gICAgKVxuICB9IGVsc2UgaWYgKGlzLm51bGwoc29sdXRpb25fY29kZSkpIHtcbiAgICBsaXN0KFxuICAgICAgY29ycmVjdCA9IEZBTFNFLFxuICAgICAgdHlwZSA9IFwid2FybmluZ1wiLFxuICAgICAgbWVzc2FnZSA9IGh0bWx0b29sczo6dGFncyRkaXYoXG4gICAgICAgIGh0bWx0b29sczo6dGFncyRwKFwiQSBwcm9ibGVtIG9jY3VycmVkIGdyYWRpbmcgdGhpcyBleGVyY2lzZS5cIiksXG4gICAgICAgIGh0bWx0b29sczo6dGFncyRwKFxuICAgICAgICAgIFwiTm8gc29sdXRpb24gY29kZSB3YXMgZm91bmQuIE5vdGUgdGhhdCBncmFkaW5nIGV4ZXJjaXNlcyB1c2luZyB0aGUgXCIsXG4gICAgICAgICAgaHRtbHRvb2xzOjp0YWdzJGNvZGUoXCJncmFkZXRoaXNcIiksXG4gICAgICAgICAgXCJwYWNrYWdlIHJlcXVpcmVzIGEgbW9kZWwgc29sdXRpb24gdG8gYmUgaW5jbHVkZWQgaW4gdGhlIGRvY3VtZW50LlwiXG4gICAgICAgIClcbiAgICAgIClcbiAgICApXG4gIH0gZWxzZSB7XG4gICAgZ3JhZGV0aGlzOjpncmFkZXRoaXNfZXhlcmNpc2VfY2hlY2tlcihcbiAgICAgIGxhYmVsID0gbGFiZWwsIHNvbHV0aW9uX2NvZGUgPSBzb2x1dGlvbl9jb2RlLCB1c2VyX2NvZGUgPSB1c2VyX2NvZGUsXG4gICAgICBjaGVja19jb2RlID0gY2hlY2tfY29kZSwgZW52aXJfcmVzdWx0ID0gZW52aXJfcmVzdWx0LFxuICAgICAgZXZhbHVhdGVfcmVzdWx0ID0gZXZhbHVhdGVfcmVzdWx0LCBlbnZpcl9wcmVwID0gZW52aXJfcHJlcCxcbiAgICAgIGxhc3RfdmFsdWUgPSBsYXN0X3ZhbHVlLCBzdGFnZSA9IHN0YWdlLCBlbmdpbmUgPSBlbmdpbmUpXG4gIH1cbn0pIn0=
+</script>
 </div>
 </div>
-</div>
-<p>We can see that Gentoo penguins have a noticeably higher median body mass compared to Chinstrap and Adelie penguins. The interquartile range (the box) for the Gentoo species does not overlap with the others, suggesting there may be a significant difference between them.</p>
-<p>Since we’re now considering species, let’s also take a look at how many penguins were observed in each species. Because we’re dealing with a categorical variable, a <strong>bar plot</strong> is appropriate.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean_penguins, <span class="fu">aes</span>(<span class="at">x =</span> species)) <span class="sc">+</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="fu">c</span>(<span class="st">"coral2"</span>, <span class="st">"chartreuse2"</span>, <span class="st">"cadetblue2"</span>),</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"coral3"</span>, <span class="st">"chartreuse4"</span>, <span class="st">"cadetblue4"</span>)) <span class="sc">+</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Penguin Species"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
+<section id="palmer-penguins" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="palmer-penguins"><span class="header-section-number">3.1</span> Palmer Penguins</h2>
+<p>Continuing on with the <code>penguins</code> dataset, we will explore plots that only contain categorical variables.</p>
+<section id="one-categorical-variable" class="level3">
+<h3 class="anchored" data-anchor-id="one-categorical-variable">One Categorical Variable</h3>
+<p>Since we were looking at species in the previous chapter, let’s take a look at how many penguins were observed in each species. Because we’re dealing with one categorical variable, a <strong>bar plot</strong> is appropriate.</p>
+<div class="cell" data-exercise="ex_3.1.0" data-envir="Ex1">
 <div>
-<figure class="figure">
-<p><img src="chapter3_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<div id="webr-2" class="exercise-cell">
+
+</div>
+<script type="webr-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImVudmlyIjoiRXgxIiwiZXZhbCI6dHJ1ZSwiZXhlcmNpc2UiOiJleF8zLjEuMCIsIm1lc3NhZ2UiOmZhbHNlLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiJcbiMgTG9hZCBpbiBnZ3Bsb3QyXG5cbiMgTG9hZCBpbiB0aWR5dmVyc2VcblxuIyBMb2FkIGluIHBhbG1lcnBlbmd1aW5zIFxuXG4jIENyZWF0ZSB0aGUgYGNsZWFuX3Blbmd1aW5zYCBkYXRhZnJhbWUgd2l0aCBtaXNzaW5nIG9ic2VydmF0aW9ucyBvbWl0dGVkXG5cbiMgUnVuIHRoZSBjb2RlIGJlbG93IFxuXG5nZ3Bsb3QoY2xlYW5fcGVuZ3VpbnMsIGFlcyh4ID0gc3BlY2llcykpICtcbiAgZ2VvbV9iYXIoZmlsbCA9IGMoXCJjb3JhbDJcIiwgXCJjaGFydHJldXNlMlwiLCBcImNhZGV0Ymx1ZTJcIiksXG4gICAgICAgICAgICAgICBjb2wgPSBjKFwiY29yYWwzXCIsIFwiY2hhcnRyZXVzZTRcIiwgXCJjYWRldGJsdWU0XCIpKSArXG4gIGxhYnMoeCA9IFwiUGVuZ3VpbiBTcGVjaWVzXCIsIHkgPSBcIkNvdW50XCIpICtcbiAgdGhlbWVfYncoKSJ9
+</script>
 </div>
 </div>
+<div class="cell" data-exercise="ex_3.1.0" data-solution="true" data-envir="Ex1">
+<div class="webr-ojs-exercise exercise-solution d-none" data-exercise="ex_3.1.0">
+<code id="interpolate-4" class="solution-code d-none">
+library(ggplot2)
+
+library(tidyverse)
+
+library(palmerpenguins)
+
+clean_penguins &lt;- na.omit(penguins)
+
+ggplot(clean_penguins, aes(x = species)) +
+  geom_bar(fill = c("coral2", "chartreuse2", "cadetblue2"),
+               col = c("coral3", "chartreuse4", "cadetblue4")) +
+  labs(x = "Penguin Species", y = "Count") +
+  theme_bw()</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-5-1"><a href="#interpolate-5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-5-2"><a href="#interpolate-5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="interpolate-5-3"><a href="#interpolate-5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-5-4"><a href="#interpolate-5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="interpolate-5-5"><a href="#interpolate-5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-5-6"><a href="#interpolate-5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="interpolate-5-7"><a href="#interpolate-5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-5-8"><a href="#interpolate-5-8" aria-hidden="true" tabindex="-1"></a>clean_penguins <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(penguins)</span>
+<span id="interpolate-5-9"><a href="#interpolate-5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-5-10"><a href="#interpolate-5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean_penguins, <span class="fu">aes</span>(<span class="at">x =</span> species)) <span class="sc">+</span></span>
+<span id="interpolate-5-11"><a href="#interpolate-5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="fu">c</span>(<span class="st">"coral2"</span>, <span class="st">"chartreuse2"</span>, <span class="st">"cadetblue2"</span>),</span>
+<span id="interpolate-5-12"><a href="#interpolate-5-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"coral3"</span>, <span class="st">"chartreuse4"</span>, <span class="st">"cadetblue4"</span>)) <span class="sc">+</span></span>
+<span id="interpolate-5-13"><a href="#interpolate-5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Penguin Species"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="interpolate-5-14"><a href="#interpolate-5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div class="cell wait" data-exercise="ex_3.1.0" data-check="true" data-envir="Ex1">
+<script type="exercise-check-ex_3.1.0-contents">
+eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJjbGFzcyI6IndhaXQiLCJlZGl0Ijp0cnVlLCJlbnZpciI6IkV4MSIsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMy4xLjAifSwiY29kZSI6ImdyYWRldGhpczo6Z3JhZGVfdGhpc19jb2RlKCkifQ==
+</script>
 </div>
 <p>We can also explore proportions to understand how each species contributes to the total sample.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>clean_penguins, <span class="fu">aes</span>(<span class="at">x=</span>species))<span class="sc">+</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="fu">c</span>(<span class="st">"coral2"</span>, <span class="st">"chartreuse2"</span>, <span class="st">"cadetblue2"</span>),</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"coral3"</span>, <span class="st">"chartreuse4"</span>, <span class="st">"cadetblue4"</span>), </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>           <span class="fu">aes</span>(<span class="at">y=</span><span class="fu">after_stat</span>(prop), <span class="at">group=</span><span class="dv">1</span>))<span class="sc">+</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Penguin Species"</span>, <span class="at">y=</span><span class="st">"Proportion"</span>)<span class="sc">+</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="chapter3_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
 <p>Adelie penguins make up a much larger proportion of the sample, while Chinstrap penguins account for the smallest. It’s important to consider how such imbalances in your dataset could influence your interpretation.</p>
-<p>We can also generate a <strong>mosaic plot</strong> for species. To do so, we will need to install <code>ggmosaic</code>.</p>
+<p>We can generate a <strong>mosaic plot</strong> for species. To do so, we will need to install <code>ggmosaic</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggmosaic"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggmosaic)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>clean_penguins, <span class="fu">aes</span>(<span class="at">col=</span>species))<span class="sc">+</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mosaic</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">product</span>(species)), <span class="at">fill=</span><span class="fu">c</span>(<span class="st">"coral2"</span>, <span class="st">"chartreuse2"</span>, <span class="st">"cadetblue2"</span>))<span class="sc">+</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggmosaic)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>clean_penguins, <span class="fu">aes</span>(<span class="at">col=</span>species))<span class="sc">+</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mosaic</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">product</span>(species)), <span class="at">fill=</span><span class="fu">c</span>(<span class="st">"coral2"</span>, <span class="st">"chartreuse2"</span>, <span class="st">"cadetblue2"</span>))<span class="sc">+</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="chapter3_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="chapter3_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>The wider the tile, the greater the proportion that species contributes. Adelie has the widest tile, which confirms it makes up the largest share of the sample.</p>
-<p>What if we want to look at penguin species by the island where they were observed? We are now dealing with two categorical variables. Mosaic plots work well here too.</p>
+</section>
+<section id="two-categorical-variables" class="level3">
+<h3 class="anchored" data-anchor-id="two-categorical-variables">Two Categorical Variables</h3>
+<p>What if we want to look at penguin species by the island where they were observed? We are now dealing with two categorical variables. We can consider a grouped barchart:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean_penguins, <span class="fu">aes</span>(<span class="at">x =</span> island, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter3_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Or stacked:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(clean_penguins<span class="sc">$</span>species, clean_penguins<span class="sc">$</span>island)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           
+            Biscoe Dream Torgersen
+  Adelie        44    55        47
+  Chinstrap      0    68         0
+  Gentoo       119     0         0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean_penguins, <span class="fu">aes</span>(<span class="at">x =</span> island, <span class="at">fill =</span> species)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"stack"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="chapter3_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Mosaic plots work well here too.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean_penguins) <span class="sc">+</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mosaic</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">product</span>(island, species)), </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mosaic</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">product</span>(species, island)), </span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"coral2"</span>, <span class="st">"chartreuse2"</span>, <span class="st">"cadetblue2"</span>),<span class="dv">3</span>)) <span class="sc">+</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="chapter3_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="chapter3_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>From this plot you can see:</p>
+<p>From these plots you can see:</p>
 <ul>
 <li><p>Adelie appear on Biscoe, Dream, and Torgersen in roughly similar counts.</p></li>
 <li><p>Chinstrap are observed only on Dream.</p></li>
 <li><p>Gentoo are observed only on Biscoe.</p></li>
 </ul>
 <p>These patterns help explain why Adelie dominate overall, and they also show that species presence varies by island.</p>
-<p>Be sure to <code>detach()</code> your dataset before you move onto the exercises.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#detach(clean_penguins)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<section id="exercise-checkpoint-2" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="exercise-checkpoint-2"><span class="header-section-number">3.1</span> Exercise Checkpoint 2</h2>
+</section>
+</section>
+<section id="exercise" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="exercise"><span class="header-section-number">3.2</span> Exercise</h2>
 <ol type="1">
-<li><p>Now that you are more comfortable generating plots and summary statistics in R, it is a good time to test your skills on a new dataset, the built-in <strong>iris</strong> dataset. This dataset is already preloaded in RStudio, so there is no need to import anything.</p>
+<li>Now that you are more comfortable generating plots and summary statistics in R, it is a good time to test your skills on a new dataset, the built-in <strong>iris</strong> dataset. This dataset is already preloaded in RStudio, so there is no need to import anything.</li>
+</ol>
 <p>To make sure it is available, you can view it by running</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(iris)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(iris)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This will open the dataset in a new tab in RStudio so you can explore its structure and variables before starting your analysis.</p>
-<p>a. How many variables are in the <code>iris</code> dataset? <input class="webex-solveme nospaces" size="1" data-answer="[&quot;5&quot;]"></p>
-<p>b. How many observations are in the <code>iris</code> dataset? <input class="webex-solveme nospaces" size="3" data-answer="[&quot;150&quot;]"></p>
-<p>c. How many categorical variables are in the <code>iris</code> dataset? <input class="webex-solveme nospaces" size="1" data-answer="[&quot;1&quot;]"></p>
-<p>d. How many numerical variables are in the <code>iris</code> dataset? <input class="webex-solveme nospaces" size="1" data-answer="[&quot;4&quot;]"></p>
-<p>e. How many species are in the <code>iris</code> dataset? <input class="webex-solveme nospaces" size="1" data-answer="[&quot;3&quot;]"></p>
-<p>f. What are the names of the three species in the <code>iris</code> dataset? Please list them in <strong>alphabetical order</strong>, separated by commas (for example: <code>x, y, z</code>) <input class="webex-solveme nospaces ignorecase regex" size="29" data-answer="[&quot;setosa, versicolor, virginica&quot;]"></p>
-<p>g. Is <code>Species</code> nominal or ordinal? <input class="webex-solveme nospaces ignorecase regex" size="7" data-answer="[&quot;nominal&quot;]"></p>
-<p>h. Is <code>Sepal.Length</code> continuous or discrete? <input class="webex-solveme nospaces ignorecase regex" size="10" data-answer="[&quot;continuous&quot;]"></p>
-<p>i. What is the mean sepal width of iris varieties rounded to one decimal place? <input class="webex-solveme nospaces" size="3" data-answer="[&quot;3.1&quot;]"></p>
-<p>j. What is an appropriate plot to visualise petal width against species? <input class="webex-solveme nospaces ignorecase regex" size="7" data-answer="[&quot;boxplot&quot;]"></p>
-<p>k. What is an appropriate plot to visualise petal width against sepal width? <input class="webex-solveme nospaces ignorecase regex" size="11" data-answer="[&quot;scatterplot&quot;]"></p></li>
-<li></li>
-</ol>
+<p>How many variables are in the <code>iris</code> dataset? <input class="webex-solveme nospaces" size="1" data-answer="[&quot;5&quot;]"></p>
+<p>How many observations are in the <code>iris</code> dataset? <input class="webex-solveme nospaces" size="3" data-answer="[&quot;150&quot;]"></p>
+<p>How many categorical variables are in the <code>iris</code> dataset? <input class="webex-solveme nospaces" size="1" data-answer="[&quot;1&quot;]"></p>
+<p>How many numerical variables are in the <code>iris</code> dataset? <input class="webex-solveme nospaces" size="1" data-answer="[&quot;4&quot;]"></p>
+<p>How many species are in the <code>iris</code> dataset? <input class="webex-solveme nospaces" size="1" data-answer="[&quot;3&quot;]"></p>
+<p>What are the names of the three species in the <code>iris</code> dataset? Please list them in <strong>alphabetical order</strong>, separated by commas (for example: <code>x, y, z</code>) <input class="webex-solveme nospaces ignorecase regex" size="29" data-answer="[&quot;setosa, versicolor, virginica&quot;]"></p>
+<p>Is <code>Species</code> nominal or ordinal? <input class="webex-solveme nospaces ignorecase regex" size="7" data-answer="[&quot;nominal&quot;]"></p>
+<p>Is <code>Sepal.Length</code> continuous or discrete? <input class="webex-solveme nospaces ignorecase regex" size="10" data-answer="[&quot;continuous&quot;]"></p>
+<p>What is the mean sepal width of iris varieties rounded to one decimal place? <input class="webex-solveme nospaces" size="3" data-answer="[&quot;3.1&quot;]"></p>
+<p>What is an appropriate plot to visualise petal width against species? <input class="webex-solveme nospaces ignorecase regex" size="7" data-answer="[&quot;boxplot&quot;]"></p>
+<p>What is an appropriate plot to visualise petal width against sepal width? <input class="webex-solveme nospaces ignorecase regex" size="11" data-answer="[&quot;scatterplot&quot;]"></p>
 
 
+<script type="webr-data">
+eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC41LjQvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyIsImd0Il0sInJlcG9zIjpbXX0sInJlbmRlcl9kZiI6Imd0LWludGVyYWN0aXZlIn0=
+</script>
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W119
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0yIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV8yO1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItMiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzIgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBleGVyY2lzZSBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKFxuICAgIHtcbiAgICAgIGlkOiBcIndlYnItMi1jb250ZW50c1wiLFxuICAgICAgZW52aXI6IGBleGVyY2lzZS1lbnYtJHtibG9jay5hdHRyLmV4ZXJjaXNlfWAsXG4gICAgICBlcnJvcjogZmFsc2UsXG4gICAgICBjYXB0aW9uOiAnRXhlcmNpc2UnLFxuICAgIH0sXG4gICAgYmxvY2suYXR0clxuICApO1xuXG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxudmlld29mIF93ZWJyX3ZhbHVlXzIgPSB3ZWJST2pzLnByb2Nlc3MoX3dlYnJfZWRpdG9yXzIsIHt9KTtcbl93ZWJyX2ZlZWRiYWNrXzIgPSB7XG4gIGNvbnN0IHsgV2ViUkdyYWRlciB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3QgZW1wdHlGZWVkYmFjayA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpO1xuXG4gIGNvbnN0IGdyYWRlciA9IG5ldyBXZWJSR3JhZGVyKF93ZWJyX3ZhbHVlXzIuZXZhbHVhdG9yKTtcbiAgY29uc3QgZmVlZGJhY2sgPSBhd2FpdCBncmFkZXIuZ3JhZGVFeGVyY2lzZSgpO1xuICBpZiAoIWZlZWRiYWNrKSByZXR1cm4gZW1wdHlGZWVkYmFjaztcbiAgcmV0dXJuIGZlZWRiYWNrO1xufVxuIn0seyJjZWxsTmFtZSI6IndlYnItd2lkZ2V0LTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIC8vIFdhaXQgZm9yIG91dHB1dCB0byBiZSB3cml0dGVuIHRvIHRoZSBET00sIHRoZW4gdHJpZ2dlciB3aWRnZXQgcmVuZGVyaW5nXG4gIGF3YWl0IF93ZWJyX3ZhbHVlXzE7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6Il93ZWJyX3ZhbHVlXzEgPSB7XG4gIGNvbnN0IHsgaGlnaGxpZ2h0UiwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIC8vIERlZmF1bHQgZXZhbHVhdGlvbiBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHtcbiAgICBpZDogXCJ3ZWJyLTEtY29udGVudHNcIixcbiAgICBlY2hvOiB0cnVlLFxuICAgIG91dHB1dDogdHJ1ZVxuICB9LCBibG9jay5hdHRyKTtcblxuICAvLyBFdmFsdWF0ZSB0aGUgcHJvdmlkZWQgUiBjb2RlXG4gIGNvbnN0IHJlc3VsdCA9IHdlYlJPanMucHJvY2Vzcyh7Y29kZTogYmxvY2suY29kZSwgb3B0aW9uc30sIHt9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiMVwiIGluIHdlYlJPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSByXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKGhpZ2hsaWdodFIoYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICB3ZWJST2pzLnJlbmRlcmVkT2pzW1wiMVwiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJpbnRlcnBvbGF0ZS00IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICBjb25zdCB7IGludGVycG9sYXRlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBibG9ja19pZCA9IFwiNFwiO1xuICBjb25zdCBsYW5ndWFnZSA9IFwibm9uZVwiO1xuICBjb25zdCBkZWZfbWFwID0ge1xufTtcbiAgY29uc3QgZWxlbSA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKGBpbnRlcnBvbGF0ZS0ke2Jsb2NrX2lkfWApO1xuXG4gIC8vIFN0b3JlIG9yaWdpbmFsIHRlbXBsYXRlZCBIVE1MIGZvciByZWZlcmVuY2UgaW4gZnV0dXJlIHJlYWN0aXZlIHVwZGF0ZXNcbiAgaWYgKCFlbGVtLm9yaWdIVE1MKSBlbGVtLm9yaWdIVE1MID0gZWxlbS5pbm5lckhUTUw7XG5cbiAgLy8gSW50ZXJwb2xhdGUgcmVhY3RpdmUgT0pTIHZhcmlhYmxlcyBpbnRvIGVzdGFibGlzaGVkIEhUTUwgZWxlbWVudFxuICBlbGVtLmlubmVySFRNTCA9IGVsZW0ub3JpZ0hUTUw7XG4gIE9iamVjdC5rZXlzKGRlZl9tYXApLmZvckVhY2goKGRlZikgPT5cbiAgICBpbnRlcnBvbGF0ZShlbGVtLCBcIiR7XCIgKyBkZWYgKyBcIn1cIiwgZGVmX21hcFtkZWZdLCBsYW5ndWFnZSlcbiAgKTtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJpbnRlcnBvbGF0ZS01IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICBjb25zdCB7IGludGVycG9sYXRlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBibG9ja19pZCA9IFwiNVwiO1xuICBjb25zdCBsYW5ndWFnZSA9IFwiclwiO1xuICBjb25zdCBkZWZfbWFwID0ge1xufTtcbiAgY29uc3QgZWxlbSA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKGBpbnRlcnBvbGF0ZS0ke2Jsb2NrX2lkfWApO1xuXG4gIC8vIFN0b3JlIG9yaWdpbmFsIHRlbXBsYXRlZCBIVE1MIGZvciByZWZlcmVuY2UgaW4gZnV0dXJlIHJlYWN0aXZlIHVwZGF0ZXNcbiAgaWYgKCFlbGVtLm9yaWdIVE1MKSBlbGVtLm9yaWdIVE1MID0gZWxlbS5pbm5lckhUTUw7XG5cbiAgLy8gSW50ZXJwb2xhdGUgcmVhY3RpdmUgT0pTIHZhcmlhYmxlcyBpbnRvIGVzdGFibGlzaGVkIEhUTUwgZWxlbWVudFxuICBlbGVtLmlubmVySFRNTCA9IGVsZW0ub3JpZ0hUTUw7XG4gIE9iamVjdC5rZXlzKGRlZl9tYXApLmZvckVhY2goKGRlZikgPT5cbiAgICBpbnRlcnBvbGF0ZShlbGVtLCBcIiR7XCIgKyBkZWYgKyBcIn1cIiwgZGVmX21hcFtkZWZdLCBsYW5ndWFnZSlcbiAgKTtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ3ZWJST2pzID0ge1xuICBjb25zdCB7IFdlYlIsIENoYW5uZWxUeXBlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lLldlYlI7XG4gIGNvbnN0IHtcbiAgICBXZWJSRXZhbHVhdG9yLFxuICAgIFdlYlJFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBSLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGhcbiAgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc3RhdHVzQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLXN0YXR1c1wiKTtcbiAgY29uc3QgaW5kaWNhdG9yQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaW5kaWNhdG9yQ29udGFpbmVyLmNsYXNzTGlzdC5yZW1vdmUoXCJkLW5vbmVcIik7XG5cbiAgbGV0IHN0YXR1c1RleHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpXG4gIHN0YXR1c1RleHQuY2xhc3NMaXN0ID0gXCJleGVyY2lzZS1sb2FkaW5nLWRldGFpbHNcIjtcbiAgc3RhdHVzVGV4dCA9IHN0YXR1c0NvbnRhaW5lci5hcHBlbmRDaGlsZChzdGF0dXNUZXh0KTtcbiAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbml0aWFsaXNlYDtcblxuICAvLyBIb2lzdCBpbmRpY2F0b3Igb3V0IGZyb20gZmluYWwgc2xpZGUgd2hlbiBydW5uaW5nIHVuZGVyIHJldmVhbFxuICBjb25zdCByZXZlYWxTdGF0dXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCAuZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGlmIChyZXZlYWxTdGF0dXMpIHtcbiAgICByZXZlYWxTdGF0dXMucmVtb3ZlKCk7XG4gICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgPiAuc2xpZGVzXCIpLmFwcGVuZENoaWxkKHJldmVhbFN0YXR1cyk7XG4gIH1cblxuICAvLyBNYWtlIGFueSByZXZlYWwgc2xpZGVzIHdpdGggbGl2ZSBjZWxscyBzY3JvbGxhYmxlXG4gIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCIucmV2ZWFsIC5leGVyY2lzZS1jZWxsXCIpLmZvckVhY2goKGVsKSA9PiB7XG4gICAgZWwuY2xvc2VzdCgnc2VjdGlvbi5zbGlkZScpLmNsYXNzTGlzdC5hZGQoXCJzY3JvbGxhYmxlXCIpO1xuICB9KVxuXG4gIC8vIHdlYlIgc3VwcGxlbWVudGFsIGRhdGEgYW5kIG9wdGlvbnNcbiAgY29uc3QgZGF0YUNvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici1kYXRhXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZGF0YSA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGRhdGFDb250ZW50KSk7XG5cbiAgLy8gR3JhYiBsaXN0IG9mIHJlc291cmNlcyB0byBiZSBkb3dubG9hZGVkXG4gIGNvbnN0IGZpbGVzQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ2ZnMtZmlsZVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGZpbGVzID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZmlsZXNDb250ZW50KSk7XG5cbiAgLy8gVXNlIFBvc3RNZXNzYWdlIGNoYW5uZWwgZm9yIGFzeW5jIGNvbW11bmljYXRpb25cbiAgLy8gV2UgZG8gbm90IGV4cGVjdCB0byB0YWtlIG5lc3RlZCBwcm9tcHQgaW5wdXQgaW4gUXVhcnRvIExpdmUgY2VsbHNcbiAgZGF0YS5vcHRpb25zLmNoYW5uZWxUeXBlID0gQ2hhbm5lbFR5cGUuUG9zdE1lc3NhZ2U7XG5cbiAgLy8gSW5pdGlhbGlzZSB3ZWJSIGFuZCBzZXR1cCBmb3IgUiBjb2RlIGV2YWx1YXRpb25cbiAgbGV0IHdlYlJQcm9taXNlID0gKGFzeW5jICh3ZWJSKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyB3ZWJSYDtcbiAgICBhd2FpdCB3ZWJSLmluaXQoKTtcblxuICAgIC8vIEluc3RhbGwgcHJvdmlkZWQgbGlzdCBvZiBwYWNrYWdlc1xuICAgIC8vIEVuc3VyZSB3ZWJSIGRlZmF1bHQgcmVwbyBpcyBpbmNsdWRlZFxuICAgIGRhdGEucGFja2FnZXMucmVwb3MucHVzaChcImh0dHBzOi8vcmVwby5yLXdhc20ub3JnXCIpXG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gd2ViUi5ldmFsUlZvaWQoYFxuICAgICAgICB3ZWJyOjppbnN0YWxsKHBrZywgcmVwb3MgPSByZXBvcylcbiAgICAgICAgbGlicmFyeShwa2csIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSlcbiAgICAgIGAsIHsgZW52OiB7XG4gICAgICAgIHBrZzogcGtnLFxuICAgICAgICByZXBvczogZGF0YS5wYWNrYWdlcy5yZXBvcyxcbiAgICAgIH19KTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICBjb25zdCBhbmFseXNpcyA9IGF3YWl0IHdlYlIuRlMuYW5hbHl6ZVBhdGgocGF0aCk7XG4gICAgICAgIGlmICghYW5hbHlzaXMuZXhpc3RzKSB7XG4gICAgICAgICAgdHJ5IHtcbiAgICAgICAgICAgIGF3YWl0IHdlYlIuRlMubWtkaXIocGF0aCk7XG4gICAgICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yOiBcIiR7ZS5tZXNzYWdlfVwiLmApO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgcmV0dXJuIGF3YWl0IHdlYlIuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5zdGFsbGluZyB3ZWJSIHNoaW1zYDtcbiAgICBhd2FpdCB3ZWJSLmV2YWxSVm9pZChgd2Vicjo6c2hpbV9pbnN0YWxsKClgKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgV2ViUiBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBSKHdlYlIsIGRhdGEpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHdlYlI7XG4gIH0pKG5ldyBXZWJSKGRhdGEub3B0aW9ucykpO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCB3ZWJSID0gYXdhaXQgd2ViUlByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFdlYlJFdmFsdWF0b3Iod2ViUiwgY29udGV4dClcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBwcm9jZXNzLFxuICAgIHdlYlJQcm9taXNlLFxuICAgIHJlbmRlcmVkT2pzLFxuICB9O1xufVxuIn1dfQ==
 </script>
 <div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
 <div id="exercise-loading-status" class="d-flex gap-2">
@@ -341,7 +392,7 @@ eyJjb250ZW50cyI6W119
 </div>
 </div>
 <script type="vfs-file">
-W10=
+WyJEYXRhLXNldHMvcmljZV9kYXRhLmNzdiIsIkRhdGEtc2V0cy9yZXNwaXJhdG9yeV9kaXNlYXNlLmNzdiIsIkRhdGEtc2V0cy9uYXBsYW5fcmVhZGluZy5jc3YiLCJEYXRhLXNldHMvTGl2aW5nV2VsbF9iYXNlbGluZS5jc3YiLCJEYXRhLXNldHMvZnJlc2h3YXRlcl90dXJ0bGVfYnJ1dl9kYXRhX21hbm5pbmdyaXZlci5jc3YiLCJEYXRhLXNldHMvZWNlYy1zdXJ2ZXktMjAyMy5jc3YiLCJEYXRhLXNldHMvRGVzY3JpcHRpb24gZm9yIE5hcGxhbiByZWFkaW5nIGRhdGFzZXQuZG9jeCIsIkRhdGEtc2V0cy9DTEVBTl9EQVRBMS5jc3YiLCJEYXRhLXNldHMvQ2xlYW5lZF9kYXRhX3ByZV9wb3N0LmNzdiIsIkRhdGEtc2V0cy9idXNwZXJmb3JtYW5jZV9yZXBvcnRzX29jdDI1LmNzdiIsIkRhdGEtc2V0cy9haXJsaW5lLXNhZmV0eS5jc3YiLCJEYXRhLXNldHMvQUJTXzIwMTFfQXJtaWRhbGVfV2Vla2x5X0luY29tZS5jc3YiXQ==
 </script>
 </section>
 

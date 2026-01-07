@@ -1,5 +1,5 @@
 ---
-title: "How To Visualise Numerical Data"
+title: "Numerical Data"
 format: 
   live-html:
     toc: true
@@ -1017,6 +1017,14 @@ ggplot(clean_penguins, aes(x=species, y=body_mass_g))+
 #| envir: Ex1
 gradethis::grade_this_code()
 ```
+
+Provide an interpretation of the above plot.
+
+`r hide("Show hint")`
+
+We can see that Gentoo penguins have a noticeably higher median body mass compared to Chinstrap and Adelie penguins. The interquartile range (the box) for the Gentoo species does not overlap with the others, suggesting there may be a significant difference between them.
+
+`r unhide()`
 
 Fantastic work! 
 
