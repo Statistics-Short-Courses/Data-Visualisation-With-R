@@ -48,11 +48,7 @@ Now that we've covered the main types of variables, we can start thinking about 
 
 In R, datasets are stored as dataframes, which are objects made up of rows and columns. Each row corresponds to an individual observation, while each column represents the variable that is being measured. There are several ways R stores variables: character for text, factor for categorical, integer for whole numbers, numeric for decimals, and logical for booleans (TRUE/FALSE).
 
-Cleaning data can be the most time-consuming, yet arguably the most important, part of analysing data! Generally, it is
-
--   wide format to long format
-
-To understand R, we will examine these concepts using real-world datasets.
+Cleaning data can be the most time-consuming, yet arguably the most important, part of analysing data! To understand R, we will examine these concepts using real-world datasets.
 
 ### NAPLAN
 
