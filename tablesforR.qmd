@@ -73,14 +73,14 @@ library(tidyverse)
 naplan <- read.csv("Data-sets/naplan_reading.csv")
 ```
 
-Try doing this yourself.
+Try typing this code yourself below. 
 
 ```{webr}
 #| exercise: ex_1.1.0
 #| envir: Ex1
 #| warning: false
 #| message: false
-____ <- read.csv("Data-sets/naplan_reading.csv")
+
 ```
 
 ```{webr}
@@ -541,7 +541,7 @@ gradethis::grade_this_code()
 sum(is.na(penguins))
 ```
 
-There are `r fitb(19)` missing observations. This can cause problems when generating numerical summaries or running statistical tests. At this stage, to handle this, we can remove the missing values. It's always best practice to store your cleaned data in a new dataset and leave the original untouched. **Note that you should always be careful when removing observations, as even partially filled observations can still provide valuable information.**
+There are `r fitb(19)` missing observations. This can cause problems when generating numerical summaries or running statistical tests. At this stage, we address this by removing the missing values. This approach will be discussed in more detail in the next chapter. As a best practice, you should always store your cleaned data in a new dataset and leave the original untouched. **Note that you should always be careful when removing observations, as even partially filled observations can still provide valuable information.**
 
 ```{webr}
 #| exercise: ex_1.2.5
